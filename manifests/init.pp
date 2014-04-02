@@ -30,6 +30,9 @@
 #     Only set this, if your platform is not supported or you know, what you're doing.
 #     Default: auto-set, platform specific
 #
+#   [*restart_cron*]
+#     Whether or not restart cron after changing timezone.
+#
 # Actions:
 #   Installs tzdata and configures timezone
 #
@@ -45,7 +48,8 @@
 class timezone (
   $ensure = 'present',
   $timezone = 'UTC',
-  $autoupgrade = false
+  $autoupgrade = false,
+  $restart_cron = false
 ) inherits timezone::params {
 
   case $ensure {
@@ -82,5 +86,14 @@ class timezone (
     ensure  => $localtime_ensure,
     target  => "${timezone::params::zoneinfo_dir}${timezone}",
     require => Package[$timezone::params::package],
+  }
+
+  if $restart_cron {
+    service { 'cron':
+      subscribe => [
+        File[$timezone::params::timezone_file],
+        File[$timezone::params::localtime_file],
+      ],
+    }
   }
 }
