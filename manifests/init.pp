@@ -73,9 +73,11 @@ class timezone (
     ensure => $package_ensure,
   }
 
-  file { $timezone::params::timezone_file:
-    ensure  => $timezone_ensure,
-    content => "${timezone}\n",
+  if $timezone::params::timezone_file != false {
+    file { $timezone::params::timezone_file:
+      ensure  => $timezone_ensure,
+      content => "${timezone}\n",
+    }
   }
 
   file { $timezone::params::localtime_file:
