@@ -43,8 +43,8 @@
 #
 # [Remember: No empty lines between comments and class definition]
 class timezone (
-  $ensure = 'present',
-  $timezone = 'UTC',
+  $ensure      = 'present',
+  $timezone    = 'UTC',
   $autoupgrade = false
 ) inherits timezone::params {
 
@@ -71,8 +71,11 @@ class timezone (
     }
   }
 
-  package { $timezone::params::package:
-    ensure => $package_ensure,
+  if $timezone::params::package {
+    package { $timezone::params::package:
+      ensure => $package_ensure,
+      before => File[$timezone::params::localtime_file],
+    }
   }
 
   if $timezone::params::timezone_file != false {
@@ -95,8 +98,7 @@ class timezone (
   }
 
   file { $timezone::params::localtime_file:
-    ensure  => $localtime_ensure,
-    target  => "${timezone::params::zoneinfo_dir}${timezone}",
-    require => Package[$timezone::params::package],
+    ensure => $localtime_ensure,
+    target => "${timezone::params::zoneinfo_dir}${timezone}",
   }
 }
