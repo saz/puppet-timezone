@@ -11,6 +11,7 @@ shared_examples 'Debian' do
 
     it { should contain_file('/etc/timezone').with_ensure('file') }
     it { should contain_file('/etc/timezone').with_content(/^UTC$/) }
+    it { should contain_exec('update_timezone').with_command(/^dpkg-reconfigure -f noninteractive tzdata$/) }
 
     it do
       should contain_file('/etc/localtime').with({
