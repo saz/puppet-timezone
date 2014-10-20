@@ -82,7 +82,7 @@ class timezone (
     }
     if $ensure == 'present' and $timezone::params::timezone_update {
       $e_command = $::osfamily ? {
-        /(Suse|Archlinux)/ => "$timezone::params::timezone_update $timezone",
+        /(Suse|Archlinux)/ => "${timezone::params::timezone_update} ${timezone}",
         default            => $timezone::params::timezone_update
       }
       exec { 'update_timezone':
