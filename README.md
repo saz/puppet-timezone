@@ -21,3 +21,4 @@ Manage timezone settings via Puppet
 ## Other class parameters
 * ensure: present or absent, default: present
 * autoupgrade: true or false, default: false. Auto-upgrade package, if there is a newer version
+* utc: yes or no, default: yes. Hardware clock is set to Universal Time; set to no if hardware clock is set to local time.

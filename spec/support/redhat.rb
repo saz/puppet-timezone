@@ -27,6 +27,11 @@ shared_examples 'RedHat' do
       it { should contain_file('/etc/localtime').with_target('/usr/share/zoneinfo/Europe/Berlin') }
     end
 
+    context 'when utc => "yes"' do
+      let(:params) {{ :utc => "yes" }}
+      it { should contain_file('/etc/sysconfig/clock').with_content(/^UTC="yes"$/) }
+    end
+
     context 'when autoupgrade => true' do
       let(:params) {{ :autoupgrade => true }}
       it { should contain_package('tzdata').with_ensure('latest') }
