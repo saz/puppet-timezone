@@ -29,7 +29,7 @@ shared_examples 'RedHat' do
 
     context 'when utc => "yes"' do
       let(:params) {{ :utc => "yes" }}
-      it { should contain_file('/etc/sysconfig/clock').with_content(/^UTC="yes"$/) }
+      it { should contain_file('/etc/sysconfig/clock').with_content(/^UTC="true"$/) }
     end
 
     context 'when autoupgrade => true' do
