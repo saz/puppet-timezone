@@ -7,6 +7,12 @@
 #     The name of the timezone.
 #     Default: UTC
 #
+#   [*utc*]
+#     Boolean to reflect hardware clock time ('yes' = Universal Time).
+#     Set to 'no' if hardware clock has been set to  local time.
+#     Currently only implemented for RedHat systems.
+#     Default: yes
+#
 #   [*ensure*]
 #     Ensure if present or absent.
 #     Default: present
@@ -45,6 +51,7 @@
 class timezone (
   $ensure = 'present',
   $timezone = 'UTC',
+  $utc = 'yes',
   $autoupgrade = false
 ) inherits timezone::params {
 
