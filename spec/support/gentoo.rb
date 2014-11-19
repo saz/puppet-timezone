@@ -11,7 +11,7 @@ shared_examples 'Gentoo' do
 
     it { should contain_file('/etc/timezone').with_ensure('file') }
     it { should contain_file('/etc/timezone').with_content(/^UTC$/) }
-
+    it { should contain_exec('update_timezone').with_command(/^emerge --config timezone-data$/) }
     it do
       should contain_file('/etc/localtime').with({
         :ensure => 'link',

@@ -80,6 +80,18 @@ class timezone (
       ensure  => $timezone_ensure,
       content => template($timezone::params::timezone_file_template),
     }
+    if $ensure == 'present' and $timezone::params::timezone_update {
+      $e_command = $::osfamily ? {
+        /(Suse|Archlinux)/ => "${timezone::params::timezone_update} ${timezone}",
+        default            => $timezone::params::timezone_update
+      }
+      exec { 'update_timezone':
+        command     => $e_command,
+        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+        subscribe   => File[$timezone::params::timezone_file],
+        refreshonly => true,
+      }
+    }
   }
 
   file { $timezone::params::localtime_file:
