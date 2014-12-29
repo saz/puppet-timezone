@@ -1,5 +1,5 @@
 shared_examples 'RedHat' do
-  let(:facts) {{ :osfamily => "RedHat" }}
+  let(:facts) {{ :osfamily => "RedHat", :operatingsystemmajrelease => '6' }}
 
   describe "when using default class parameters" do
     let(:params) {{ }}
@@ -38,6 +38,11 @@ shared_examples 'RedHat' do
       it { should contain_package('tzdata').with_ensure('present') }
       it { should contain_file('/etc/sysconfig/clock').with_ensure('absent') }
       it { should contain_file('/etc/localtime').with_ensure('absent') }
+    end
+
+    context 'when RHEL 7' do
+      let(:facts) {{ :osfamily => "RedHat", :operatingsystemmajrelease => '7' }}
+      it { should_not contain_file('/etc/sysconfig/clock').with_ensure('file') }
     end
 
     include_examples 'validate parameters'
