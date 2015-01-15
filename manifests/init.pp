@@ -49,7 +49,7 @@
 class timezone (
   $ensure = 'present',
   $timezone = 'UTC',
-  $hwutc = undef,
+  $hwutc = '',
   $autoupgrade = false
 ) inherits timezone::params {
 
