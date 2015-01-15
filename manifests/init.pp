@@ -30,6 +30,10 @@
 #     Only set this, if your platform is not supported or you know, what you're doing.
 #     Default: auto-set, platform specific
 #
+#   [*hwutc*]
+#     Is the hardware clock set to UTC? (true or false)
+#     Default: undefined
+#
 # Actions:
 #   Installs tzdata and configures timezone
 #
