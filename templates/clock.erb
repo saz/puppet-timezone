@@ -1,4 +1,4 @@
 ZONE="<%= @timezone %>"
-<% if @hwutc.kind_of? Boolean -%>
+<% if !@hwutc.empty? -%>
 UTC=<%= @hwutc %>
 <% end -%>
