@@ -12,7 +12,7 @@ class timezone::params {
       $timezone_file_template = 'timezone/timezone.erb'
       $timezone_update = 'dpkg-reconfigure -f noninteractive tzdata'
     }
-    'RedHat': {
+    'RedHat', 'Linux': {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
