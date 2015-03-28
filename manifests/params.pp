@@ -16,7 +16,14 @@ class timezone::params {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
-      $timezone_file = '/etc/sysconfig/clock'
+      case $::operatingsystemmajrelease {
+        '7': {
+          $timezone_file = false
+        }
+        default: {
+          $timezone_file = '/etc/sysconfig/clock'
+        }
+      }
       $timezone_file_template = 'timezone/clock.erb'
       $timezone_update = false
     }
