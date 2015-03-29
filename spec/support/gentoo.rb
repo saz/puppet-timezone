@@ -7,7 +7,12 @@ shared_examples 'Gentoo' do
     it { should create_class('timezone') }
     it { should contain_class('timezone::params') }
 
-    it { should contain_package('sys-libs/timezone-data').with_ensure('present') }
+    it do
+      should contain_package('sys-libs/timezone-data').with({
+        :ensure => 'present',
+        :before => 'File[/etc/localtime]',
+      })
+    end
 
     it { should contain_file('/etc/timezone').with_ensure('file') }
     it { should contain_file('/etc/timezone').with_content(/^UTC$/) }
@@ -16,7 +21,6 @@ shared_examples 'Gentoo' do
       should contain_file('/etc/localtime').with({
         :ensure => 'link',
         :target => '/usr/share/zoneinfo/UTC',
-        :require  => "Package[sys-libs/timezone-data]",
       })
     end
 

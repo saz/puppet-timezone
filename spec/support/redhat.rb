@@ -7,7 +7,13 @@ shared_examples 'RedHat' do
     it { should create_class('timezone') }
     it { should contain_class('timezone::params') }
 
-    it { should contain_package('tzdata').with_ensure('present') }
+    it do
+      should contain_package('tzdata').with({
+        :ensure => 'present',
+        :before => 'File[/etc/localtime]',
+      })
+    end
+
 
     it { should contain_file('/etc/sysconfig/clock').with_ensure('file') }
     it { should contain_file('/etc/sysconfig/clock').with_content(/^ZONE="UTC"$/) }
@@ -17,7 +23,6 @@ shared_examples 'RedHat' do
       should contain_file('/etc/localtime').with({
         :ensure => 'link',
         :target => '/usr/share/zoneinfo/UTC',
-        :require  => "Package[tzdata]",
       })
     end
 
