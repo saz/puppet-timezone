@@ -10,6 +10,7 @@ class timezone::params {
       $localtime_file = '/etc/localtime'
       $timezone_file = '/etc/timezone'
       $timezone_file_template = 'timezone/timezone.erb'
+      $timezone_file_supports_comment = false
       $timezone_update = 'dpkg-reconfigure -f noninteractive tzdata'
     }
     'RedHat', 'Linux': {
@@ -33,6 +34,7 @@ class timezone::params {
       $localtime_file = '/etc/localtime'
       $timezone_file = '/etc/timezone'
       $timezone_file_template = 'timezone/timezone.erb'
+      $timezone_file_supports_comment = true
       $timezone_update = 'emerge --config timezone-data'
     }
     'Archlinux': {
