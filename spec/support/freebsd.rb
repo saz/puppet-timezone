@@ -9,15 +9,15 @@ shared_examples 'FreeBSD' do
 
     it do
       should contain_file('/etc/localtime').with({
-        :ensure => 'link',
-        :target => '/usr/share/zoneinfo/UTC',
+        :ensure => 'file',
+        :source => 'file:///usr/share/zoneinfo/Etc/UTC',
       })
     end
 
     context 'when timezone => "Europe/Berlin"' do
       let(:params) {{ :timezone => "Europe/Berlin" }}
 
-      it { should contain_file('/etc/localtime').with_target('/usr/share/zoneinfo/Europe/Berlin') }
+      it { should contain_file('/etc/localtime').with_source('file:///usr/share/zoneinfo/Europe/Berlin') }
     end
 
     context 'when autoupgrade => true' do
