@@ -48,7 +48,7 @@
 # [Remember: No empty lines between comments and class definition]
 class timezone (
   $ensure = 'present',
-  $timezone = 'UTC',
+  $timezone = 'Etc/UTC',
   $hwutc = '',
   $autoupgrade = false
 ) inherits timezone::params {
@@ -77,6 +77,22 @@ class timezone (
   }
 
   if $timezone::params::package {
+    if $package_ensure == 'present' and $::osfamily == 'Debian' {
+      $_area = split($timezone, '/')
+      $area = $_area[0]
+      $_zone = split($timezone, '/')
+      $zone = $_zone[1]
+      exec { 'update_debconf area':
+        command => "echo tzdata tzdata/Areas select ${area} | debconf-set-selections",
+        unless  => "debconf-get-selections |grep -q -E \"^tzdata\\s+tzdata/Areas\\s+select\\s+${area}\"",
+        path    => $::path,
+      }
+      exec { 'update_debconf zone':
+        command => "echo tzdata tzdata/Zones/${area} select ${timezone} | debconf-set-selections",
+        unless  => "debconf-get-selections |grep -E \"^tzdata\\s+tzdata/Zones/${area}\\s+select\\s+${zone}\"",
+        path    => $::path,
+      }
+    }
     package { $timezone::params::package:
       ensure => $package_ensure,
       before => File[$timezone::params::localtime_file],
