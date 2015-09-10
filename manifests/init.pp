@@ -62,7 +62,7 @@ class timezone (
       } else {
         $package_ensure = 'present'
       }
-      $localtime_ensure = 'link'
+      $localtime_ensure = 'file'
       $timezone_ensure = 'file'
     }
     /(absent)/: {
@@ -104,6 +104,6 @@ class timezone (
 
   file { $timezone::params::localtime_file:
     ensure => $localtime_ensure,
-    target => "${timezone::params::zoneinfo_dir}${timezone}",
+    source => "file://${timezone::params::zoneinfo_dir}${timezone}",
   }
 }
