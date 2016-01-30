@@ -16,13 +16,13 @@ shared_examples 'RedHat' do
 
 
     it { should contain_file('/etc/sysconfig/clock').with_ensure('file') }
-    it { should contain_file('/etc/sysconfig/clock').with_content(/^ZONE="UTC"$/) }
+    it { should contain_file('/etc/sysconfig/clock').with_content(/^ZONE="Etc\/UTC"$/) }
     it { should_not contain_exec('update_timezone') }
 
     it do
       should contain_file('/etc/localtime').with({
-        :ensure => 'link',
-        :target => '/usr/share/zoneinfo/UTC',
+        :ensure => 'file',
+        :source => 'file:///usr/share/zoneinfo/Etc/UTC',
       })
     end
 
@@ -30,7 +30,7 @@ shared_examples 'RedHat' do
       let(:params) {{ :timezone => "Europe/Berlin" }}
 
       it { should contain_file('/etc/sysconfig/clock').with_content(/^ZONE="Europe\/Berlin"$/) }
-      it { should contain_file('/etc/localtime').with_target('/usr/share/zoneinfo/Europe/Berlin') }
+      it { should contain_file('/etc/localtime').with_source('file:///usr/share/zoneinfo/Europe/Berlin') }
     end
 
     context 'when autoupgrade => true' do

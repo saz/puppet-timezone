@@ -3,7 +3,7 @@ branches:
   only:
     - master
 language: ruby
-bundler_args: --without development
+bundler_args: --without system_tests
 script: bundle exec rake test
 after_success:
   - git clone -q git://github.com/puppetlabs/ghpublisher.git .forge-releng
@@ -33,5 +33,17 @@ matrix:
       env: PUPPET_GEM_VERSION="~> 3.3.0"
     - rvm: 2.0.0
       env: PUPPET_GEM_VERSION="~> 3.4.0"
+    - rvm: default
+      sudo: required
+      services: docker
+      env: BEAKER_set="centos-7"
+      bundler_args:
+      script: bundle exec rspec spec/acceptance
+    - rvm: default
+      sudo: required
+      services: docker
+      env: BEAKER_set="debian-8"
+      bundler_args:
+      script: bundle exec rspec spec/acceptance
 notifications:
   email: false

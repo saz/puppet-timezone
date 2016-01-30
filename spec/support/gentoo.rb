@@ -15,12 +15,12 @@ shared_examples 'Gentoo' do
     end
 
     it { should contain_file('/etc/timezone').with_ensure('file') }
-    it { should contain_file('/etc/timezone').with_content(/^UTC$/) }
+    it { should contain_file('/etc/timezone').with_content(/^Etc\/UTC$/) }
     it { should contain_exec('update_timezone').with_command(/^emerge --config timezone-data$/) }
     it do
       should contain_file('/etc/localtime').with({
-        :ensure => 'link',
-        :target => '/usr/share/zoneinfo/UTC',
+        :ensure => 'file',
+        :source => 'file:///usr/share/zoneinfo/Etc/UTC',
       })
     end
 
@@ -28,7 +28,7 @@ shared_examples 'Gentoo' do
       let(:params) {{ :timezone => "Europe/Berlin" }}
 
       it { should contain_file('/etc/timezone').with_content(/^Europe\/Berlin$/) }
-      it { should contain_file('/etc/localtime').with_target('/usr/share/zoneinfo/Europe/Berlin') }
+      it { should contain_file('/etc/localtime').with_source('file:///usr/share/zoneinfo/Europe/Berlin') }
     end
 
     context 'when autoupgrade => true' do
