@@ -105,9 +105,9 @@ class timezone (
       content => template($timezone::params::timezone_file_template),
     }
     if $ensure == 'present' and $timezone::params::timezone_update {
-      $e_command = $::osfamily ? {
-        /(Suse|Archlinux)/ => "${timezone::params::timezone_update} ${timezone}",
-        default            => $timezone::params::timezone_update
+      $e_command = $timezone::params::timezone_update_arg ? {
+        true  => "${timezone::params::timezone_update} ${timezone}",
+        false => $timezone::params::timezone_update
       }
       exec { 'update_timezone':
         command     => $e_command,

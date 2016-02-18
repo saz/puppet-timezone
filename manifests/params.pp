@@ -12,6 +12,7 @@ class timezone::params {
       $timezone_file_template = 'timezone/timezone.erb'
       $timezone_file_supports_comment = false
       $timezone_update = 'dpkg-reconfigure -f noninteractive tzdata'
+      $timezone_update_arg = false
     }
     'RedHat', 'Linux': {
       $package = 'tzdata'
@@ -27,6 +28,7 @@ class timezone::params {
       }
       $timezone_file_template = 'timezone/clock.erb'
       $timezone_update = 'tzdata-update'
+      $timezone_update_arg = false
     }
     'Gentoo': {
       $package = 'sys-libs/timezone-data'
@@ -36,6 +38,7 @@ class timezone::params {
       $timezone_file_template = 'timezone/timezone.erb'
       $timezone_file_supports_comment = true
       $timezone_update = 'emerge --config timezone-data'
+      $timezone_update_arg = false
     }
     'Archlinux': {
       $package = 'tzdata'
@@ -43,6 +46,7 @@ class timezone::params {
       $localtime_file = '/etc/localtime'
       $timezone_file = false
       $timezone_update = 'timedatectl set-timezone '
+      $timezone_update_arg = true
     }
     'Suse': {
       $package = 'timezone'
@@ -50,6 +54,7 @@ class timezone::params {
       $localtime_file = '/etc/localtime'
       $timezone_file = false
       $timezone_update = 'zic -l '
+      $timezone_update_arg = true
     }
     'FreeBSD': {
       $package      = undef
