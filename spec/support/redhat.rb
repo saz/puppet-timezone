@@ -48,6 +48,7 @@ shared_examples 'RedHat' do
     context 'when RHEL 7' do
       let(:facts) {{ :osfamily => "RedHat", :operatingsystemmajrelease => '7' }}
       it { should_not contain_file('/etc/sysconfig/clock').with_ensure('file') }
+      it { should contain_exec('update_timezone').with_command('timedatectl set-timezone  Etc/UTC') }
     end
 
     include_examples 'validate parameters'

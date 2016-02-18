@@ -18,17 +18,16 @@ class timezone::params {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
-      case $::operatingsystemmajrelease {
-        '7': {
-          $timezone_file = false
-        }
-        default: {
-          $timezone_file = '/etc/sysconfig/clock'
-        }
+      if $::operatingsystemmajrelease == '7' {
+        $timezone_file = false
+        $timezone_update = 'timedatectl set-timezone '
+        $timezone_update_arg = true
+      } else {
+        $timezone_file_template = 'timezone/clock.erb'
+        $timezone_file = '/etc/sysconfig/clock'
+        $timezone_update = 'tzdata-update'
+        $timezone_update_arg = false
       }
-      $timezone_file_template = 'timezone/clock.erb'
-      $timezone_update = 'tzdata-update'
-      $timezone_update_arg = false
     }
     'Gentoo': {
       $package = 'sys-libs/timezone-data'
