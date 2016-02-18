@@ -8,6 +8,7 @@ class timezone::params {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = '/etc/timezone'
       $timezone_file_template = 'timezone/timezone.erb'
       $timezone_file_supports_comment = false
@@ -22,17 +23,20 @@ class timezone::params {
         $timezone_file = false
         $timezone_update = 'timedatectl set-timezone '
         $timezone_update_arg = true
+        $localtime_file_type = 'link'
       } else {
         $timezone_file_template = 'timezone/clock.erb'
         $timezone_file = '/etc/sysconfig/clock'
         $timezone_update = 'tzdata-update'
         $timezone_update_arg = false
+        $localtime_file_type = 'file'
       }
     }
     'Gentoo': {
       $package = 'sys-libs/timezone-data'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = '/etc/timezone'
       $timezone_file_template = 'timezone/timezone.erb'
       $timezone_file_supports_comment = true
@@ -43,6 +47,7 @@ class timezone::params {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = false
       $timezone_update = 'timedatectl set-timezone '
       $timezone_update_arg = true
@@ -51,6 +56,7 @@ class timezone::params {
       $package = 'timezone'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = false
       $timezone_update = 'zic -l '
       $timezone_update_arg = true
@@ -59,6 +65,7 @@ class timezone::params {
       $package      = undef
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = false
     }
     default: {

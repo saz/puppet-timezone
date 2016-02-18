@@ -54,11 +54,13 @@ shared_examples 'RedHat' do
     let(:facts) {{ :osfamily => "RedHat", :operatingsystemmajrelease => '7' }}
     it { should_not contain_file('/etc/sysconfig/clock').with_ensure('file') }
     it { should contain_exec('update_timezone').with_command('timedatectl set-timezone  Etc/UTC') }
+    it { should contain_file('/etc/localtime').with_target('file:///usr/share/zoneinfo/Etc/UTC') }
 
     context 'when timezone => "Europe/Berlin"' do
       let(:params) {{ :timezone => "Europe/Berlin" }}
 
       it { should contain_exec('update_timezone').with_command('timedatectl set-timezone  Europe/Berlin') }
+      it { should contain_file('/etc/localtime').with_target('file:///usr/share/zoneinfo/Europe/Berlin') }
     end
   end
 end

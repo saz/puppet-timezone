@@ -119,8 +119,19 @@ class timezone (
     }
   }
 
-  file { $timezone::params::localtime_file:
-    ensure => $localtime_ensure,
-    source => "file://${timezone::params::zoneinfo_dir}${timezone}",
+  if $ensure == 'absent' {
+    file { $timezone::params::localtime_file:
+      ensure => 'absent',
+    }
+  } elsif $timezone::params::localtime_file_type == 'link' {
+    file { $timezone::params::localtime_file:
+      ensure => 'link',
+      target => "file://${timezone::params::zoneinfo_dir}${timezone}",
+    }
+  } elsif $timezone::params::localtime_file_type == 'file' {
+    file { $timezone::params::localtime_file:
+      ensure => 'file',
+      source => "file://${timezone::params::zoneinfo_dir}${timezone}",
+    }
   }
 }
