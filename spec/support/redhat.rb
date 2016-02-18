@@ -17,7 +17,7 @@ shared_examples 'RedHat' do
 
     it { should contain_file('/etc/sysconfig/clock').with_ensure('file') }
     it { should contain_file('/etc/sysconfig/clock').with_content(/^ZONE="Etc\/UTC"$/) }
-    it { should_not contain_exec('update_timezone') }
+    it { should contain_exec('update_timezone').with_command('tzdata-update') }
 
     it do
       should contain_file('/etc/localtime').with({

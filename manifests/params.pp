@@ -26,7 +26,7 @@ class timezone::params {
         }
       }
       $timezone_file_template = 'timezone/clock.erb'
-      $timezone_update = false
+      $timezone_update = 'tzdata-update'
     }
     'Gentoo': {
       $package = 'sys-libs/timezone-data'
