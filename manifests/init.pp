@@ -126,7 +126,7 @@ class timezone (
   } elsif $timezone::params::localtime_file_type == 'link' {
     file { $timezone::params::localtime_file:
       ensure => 'link',
-      target => "file://${timezone::params::zoneinfo_dir}${timezone}",
+      target => "${timezone::params::zoneinfo_dir}${timezone}",
     }
   } elsif $timezone::params::localtime_file_type == 'file' {
     file { $timezone::params::localtime_file:
