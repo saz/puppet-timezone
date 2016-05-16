@@ -82,15 +82,15 @@ class timezone (
       $area = $_area[0]
       $_zone = split($timezone, '/')
       $zone = $_zone[1]
-      exec { 'update_debconf area':
-        command => "echo tzdata tzdata/Areas select ${area} | debconf-set-selections",
-        unless  => "debconf-get-selections |grep -q -E \"^tzdata\\s+tzdata/Areas\\s+select\\s+${area}\"",
-        path    => $::path,
+      debconf { 'update_debconf area':
+        item  => 'tzdata/Areas',
+        type  => 'select',
+        value => $area,
       }
-      exec { 'update_debconf zone':
-        command => "echo tzdata tzdata/Zones/${area} select ${timezone} | debconf-set-selections",
-        unless  => "debconf-get-selections |grep -E \"^tzdata\\s+tzdata/Zones/${area}\\s+select\\s+${zone}\"",
-        path    => $::path,
+      debconf { 'update_debconf zone':
+        item  => "tzdata/Zones/${area}",
+        type  => 'select',
+        value => $zone,
       }
     }
     package { $timezone::params::package:
