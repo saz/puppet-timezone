@@ -62,7 +62,11 @@ class timezone (
       } else {
         $package_ensure = 'present'
       }
-      $localtime_ensure = 'file'
+      if $timezone::params::localtime_symlink {
+        $localtime_ensure = 'symlink'
+      } else {
+        $localtime_ensure = 'file'
+      }
       $timezone_ensure = 'file'
     }
     /(absent)/: {
@@ -118,8 +122,15 @@ class timezone (
     }
   }
 
-  file { $timezone::params::localtime_file:
-    ensure => $localtime_ensure,
-    source => "file://${timezone::params::zoneinfo_dir}${timezone}",
+  if $localtime_ensure == 'symlink' {
+    file { $timezone::params::localtime_file:
+      ensure => $localtime_ensure,
+      target => "${timezone::params::zoneinfo_dir}${timezone}",
+    }
+  } else {
+    file { $timezone::params::localtime_file:
+      ensure => $localtime_ensure,
+      source => "file://${timezone::params::zoneinfo_dir}${timezone}",
+    }
   }
 }
