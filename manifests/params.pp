@@ -51,7 +51,7 @@ class timezone::params {
       $timezone_file = false
       $timezone_update = 'zic -l '
     }
-    /(Free|Open)BSD/: {
+    'FreeBSD', 'OpenBSD': {
       $package      = undef
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
