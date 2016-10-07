@@ -57,6 +57,12 @@ class timezone::params {
       $localtime_file = '/etc/localtime'
       $timezone_file = false
     }
+    'Darwin': {
+      $package      = undef
+      $zoneinfo_dir = '/usr/share/zoneinfo/'
+      $localtime_file = '/etc/localtime'
+      $timezone_file = false
+    }
     default: {
       case $::operatingsystem {
         default: {
