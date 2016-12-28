@@ -121,5 +121,7 @@ class timezone (
   file { $timezone::params::localtime_file:
     ensure => $localtime_ensure,
     source => "file://${timezone::params::zoneinfo_dir}${timezone}",
+    links  => follow,
+    mode   => '0644',
   }
 }
