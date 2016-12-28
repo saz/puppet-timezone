@@ -8,53 +8,64 @@ class timezone::params {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = '/etc/timezone'
       $timezone_file_template = 'timezone/timezone.erb'
       $timezone_file_supports_comment = false
       $timezone_update = 'dpkg-reconfigure -f noninteractive tzdata'
+      $timezone_update_arg = false
     }
     'RedHat', 'Linux': {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
-      case $::operatingsystemmajrelease {
-        '7': {
-          $timezone_file = false
-        }
-        default: {
-          $timezone_file = '/etc/sysconfig/clock'
-        }
+      if $::operatingsystemmajrelease == '7' {
+        $timezone_file = false
+        $timezone_update = 'timedatectl set-timezone '
+        $timezone_update_arg = true
+        $localtime_file_type = 'link'
+      } else {
+        $timezone_file_template = 'timezone/clock.erb'
+        $timezone_file = '/etc/sysconfig/clock'
+        $timezone_update = 'tzdata-update'
+        $timezone_update_arg = false
+        $localtime_file_type = 'file'
       }
-      $timezone_file_template = 'timezone/clock.erb'
-      $timezone_update = false
     }
     'Gentoo': {
       $package = 'sys-libs/timezone-data'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = '/etc/timezone'
       $timezone_file_template = 'timezone/timezone.erb'
       $timezone_file_supports_comment = true
       $timezone_update = 'emerge --config timezone-data'
+      $timezone_update_arg = false
     }
     'Archlinux': {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = false
       $timezone_update = 'timedatectl set-timezone '
+      $timezone_update_arg = true
     }
     'Suse': {
       $package = 'timezone'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = false
       $timezone_update = 'zic -l '
+      $timezone_update_arg = true
     }
     'FreeBSD': {
       $package      = undef
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
+      $localtime_file_type = 'file'
       $timezone_file = false
     }
     'Darwin': {
