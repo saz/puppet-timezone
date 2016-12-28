@@ -67,6 +67,8 @@ class timezone::params {
       $localtime_file = '/etc/localtime'
       $localtime_file_type = 'file'
       $timezone_file = false
+      $timezone_update = false
+      $timezone_update_arg = false
     }
     'Darwin': {
       $package      = undef
