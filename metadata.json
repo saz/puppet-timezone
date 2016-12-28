@@ -47,6 +47,10 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 2.3.0"
+    },
+    {
+      "name": "stm/debconf",
+      "version_requirement": ">= 1.0.0"
     }
   ]
 }
