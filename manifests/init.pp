@@ -83,13 +83,13 @@ class timezone (
       $_zone = split($timezone, '/')
       $zone = $_zone[1]
       exec { 'update_debconf area':
-        command => "echo tzdata tzdata/Areas select ${area} | debconf-set-selections",
-        unless  => "debconf-get-selections |grep -q -E \"^tzdata\\s+tzdata/Areas\\s+select\\s+${area}\"",
+        command => "/bin/echo tzdata tzdata/Areas select ${area} | /usr/bin/debconf-set-selections",
+        unless  => "/usr/bin/debconf-get-selections | /bin/grep -q -E \"^tzdata\\s+tzdata/Areas\\s+select\\s+${area}\"",
         path    => $::path,
       }
       exec { 'update_debconf zone':
-        command => "echo tzdata tzdata/Zones/${area} select ${timezone} | debconf-set-selections",
-        unless  => "debconf-get-selections |grep -E \"^tzdata\\s+tzdata/Zones/${area}\\s+select\\s+${zone}\"",
+        command => "/bin/echo tzdata tzdata/Zones/${area} select ${timezone} | /usr/bin/debconf-set-selections",
+        unless  => "/usr/bin/debconf-get-selections | /bin/grep -E \"^tzdata\\s+tzdata/Zones/${area}\\s+select\\s+${zone}\"",
         path    => $::path,
       }
     }
