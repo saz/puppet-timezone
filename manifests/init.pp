@@ -49,10 +49,11 @@
 class timezone (
   $ensure = 'present',
   $timezone = 'Etc/UTC',
-  $hwutc = '',
+  $hwutc = true,
   $autoupgrade = false
 ) inherits timezone::params {
 
+  validate_bool($hwutc)
   validate_bool($autoupgrade)
 
   case $ensure {
