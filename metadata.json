@@ -40,7 +40,7 @@
   "source": "git://github.com/saz/puppet-timezone",
   "author": "saz",
   "license": "Apache License, Version 2.0",
-  "summary": "UNKNOWN",
+  "summary": "Manage timezone settings via Puppet",
   "description": "Manage timezone settings via Puppet",
   "project_page": "https://github.com/saz/puppet-timezone",
   "dependencies": [
