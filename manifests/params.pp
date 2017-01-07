@@ -80,7 +80,6 @@ class timezone::params {
       $package      = undef
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
-      $localtime_symlink = true
       $timezone_file = false
     }
     default: {

@@ -63,17 +63,11 @@ class timezone (
       } else {
         $package_ensure = 'present'
       }
-      if $timezone::params::localtime_symlink {
-        $localtime_ensure = 'symlink'
-      } else {
-        $localtime_ensure = 'file'
-      }
       $timezone_ensure = 'file'
     }
     /(absent)/: {
       # Leave package installed, as it is a system dependency
       $package_ensure = 'present'
-      $localtime_ensure = 'absent'
       $timezone_ensure = 'absent'
     }
     default: {
@@ -124,9 +118,9 @@ class timezone (
     }
   }
 
-  if $localtime_ensure == 'absent' {
+  if $ensure == 'absent' {
     file { $timezone::params::localtime_file:
-      ensure => $localtime_ensure,
+      ensure => $ensure,
     }
   } elsif $timezone::params::localtime_file_type == 'link' {
     file { $timezone::params::localtime_file:
