@@ -63,7 +63,11 @@ class timezone (
       } else {
         $package_ensure = 'present'
       }
-      $localtime_ensure = 'file'
+      if $timezone::params::localtime_symlink {
+        $localtime_ensure = 'symlink'
+      } else {
+        $localtime_ensure = 'file'
+      }
       $timezone_ensure = 'file'
     }
     /(absent)/: {
