@@ -53,7 +53,7 @@ class timezone (
   $autoupgrade = false
 ) inherits timezone::params {
 
-  if versioncmp($clientversion, '4.4') => 0 {
+  if versioncmp($clientversion, '4.4') >= 0 {
     validate_legacy(Boolean, 'validate_bool', $hwutc)
     validate_legacy(Boolean, 'validate_bool', $autoupgrade)
   } else {
