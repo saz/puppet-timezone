@@ -28,15 +28,15 @@
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": "3.2.x"
+      "version_requirement": "2017.x"
     },
     {
       "name": "puppet",
-      "version_requirement": "3.x"
+      "version_requirement": "4.x"
     }
   ],
   "name": "saz-timezone",
-  "version": "3.4.0",
+  "version": "5.0.0",
   "source": "git://github.com/saz/puppet-timezone",
   "author": "saz",
   "license": "Apache-2.0",
