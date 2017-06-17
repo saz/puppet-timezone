@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/BlockLength
+
 shared_examples 'Gentoo' do
   let(:facts) { { osfamily: 'Gentoo' } }
 
@@ -29,11 +31,13 @@ shared_examples 'Gentoo' do
 
     context 'when autoupgrade => true' do
       let(:params) { { autoupgrade: true } }
+
       it { is_expected.to contain_package('sys-libs/timezone-data').with_ensure('latest') }
     end
 
     context 'when ensure => absent' do
       let(:params) { { ensure: 'absent' } }
+
       it { is_expected.to contain_package('sys-libs/timezone-data').with_ensure('present') }
       it { is_expected.to contain_file('/etc/timezone').with_ensure('absent') }
       it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }

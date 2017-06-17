@@ -20,6 +20,7 @@ shared_examples 'FreeBSD' do
 
     context 'when ensure => absent' do
       let(:params) { { ensure: 'absent' } }
+
       it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }
     end
 
