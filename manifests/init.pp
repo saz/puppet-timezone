@@ -47,14 +47,11 @@
 #
 # [Remember: No empty lines between comments and class definition]
 class timezone (
-  $ensure = 'present',
-  $timezone = 'Etc/UTC',
-  $hwutc = true,
-  $autoupgrade = false
+  Enum['present','absent'] $ensure = 'present',
+  String[1] $timezone = 'Etc/UTC',
+  Boolean $hwutc = true,
+  Boolean $autoupgrade = false
 ) inherits timezone::params {
-
-  validate_bool($hwutc)
-  validate_bool($autoupgrade)
 
   case $ensure {
     /(present)/: {

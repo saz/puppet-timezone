@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/BlockLength
+
 shared_examples 'Debian' do
   let(:facts) { { osfamily: 'Debian' } }
 

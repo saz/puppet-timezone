@@ -6,6 +6,8 @@ AllCops:
   Exclude:
     - files/**/*
     - vendor/**/*
+    - Gemfile
+    - Rakefile
     - .vendor/**/*
     - pkg/**/*
     - spec/fixtures/**/*
@@ -301,6 +303,9 @@ Style/EmptyLiteral:
 Metrics/LineLength:
   Enabled: false
 
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: true
+
 Style/MethodDefParentheses:
   Enabled: true
 
@@ -500,9 +505,6 @@ Lint/UselessAssignment:
 Layout/ClosingParenthesisIndentation:
   Enabled: false
 
-Metrics/BlockLength:
-  Enabled: false
-
 # RSpec
 
 # We don't use rspec in this way
@@ -512,6 +514,5 @@ RSpec/DescribeClass:
 # Example length is not necessarily an indicator of code quality
 RSpec/ExampleLength:
   Enabled: False
-
 RSpec/NestedGroups:                                                                                                                                                                                              
   Max: 4 

@@ -4,8 +4,7 @@ shared_examples_for 'validate parameters' do
   ].each do |param|
     context "with #{param} => 'foo'" do
       let(:params) { { param.to_sym => 'foo' } }
-
-      it { expect { is_expected.to create_class('timezone') }.to raise_error(Puppet::Error, %r{is not a boolean}) }
+      it { expect { is_expected.to create_class('timezone') }.to raise_error(Puppet::Error, %r{expects a Boolean value}) }
     end
   end
 end
