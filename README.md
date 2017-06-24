@@ -3,7 +3,8 @@
 Manage timezone settings via Puppet
 
 ### Supported Puppet versions
-* Puppet >= 3
+* Puppet >= 4
+* Last version supporting Puppet 3: v3.5.0
 
 ## Usage
 
