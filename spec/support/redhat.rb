@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/BlockLength
+
 shared_examples 'RedHat' do
   let(:facts) { { osfamily: 'RedHat', operatingsystemmajrelease: '6' } }
 
