@@ -14,11 +14,13 @@ shared_examples 'RedHat' do
 
     context 'when autoupgrade => true' do
       let(:params) { { autoupgrade: true } }
+
       it { is_expected.to contain_package('tzdata').with_ensure('latest') }
     end
 
     context 'when ensure => absent' do
       let(:params) { { ensure: 'absent' } }
+
       it { is_expected.to contain_package('tzdata').with_ensure('present') }
       it { is_expected.to contain_file('/etc/sysconfig/clock').with_ensure('absent') }
       it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }
@@ -29,6 +31,7 @@ shared_examples 'RedHat' do
 
   context 'when RHEL 6' do
     let(:facts) { { osfamily: 'RedHat', operatingsystemmajrelease: '6' } }
+
     it { is_expected.to contain_file('/etc/sysconfig/clock').with_ensure('file') }
     it { is_expected.to contain_file('/etc/sysconfig/clock').with_content(%r{^ZONE="Etc\/UTC"$}) }
     it { is_expected.to contain_exec('update_timezone').with_command('tzdata-update') }
@@ -48,6 +51,7 @@ shared_examples 'RedHat' do
 
   context 'when RHEL 7' do
     let(:facts) { { osfamily: 'RedHat', operatingsystemmajrelease: '7' } }
+
     it { is_expected.not_to contain_file('/etc/sysconfig/clock').with_ensure('file') }
     it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone  Etc/UTC') }
     it { is_expected.to contain_file('/etc/localtime').with_target('/usr/share/zoneinfo/Etc/UTC') }
