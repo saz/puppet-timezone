@@ -1,8 +1,9 @@
-pkg/
 *.swp
-Gemfile.lock
-spec/fixtures
-/coverage/
-.vagrant
 .bundle/
+.vagrant
+/coverage/
+Gemfile.lock
+log/
+pkg/
+spec/fixtures
 vendor/
