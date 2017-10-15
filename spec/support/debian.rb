@@ -1,5 +1,5 @@
 shared_examples 'Debian' do
-  let(:facts) { { osfamily: 'Debian' } }
+  let(:facts) { { os: {"name"=>"Debian", "family"=>"Debian", } } }
 
   describe 'when using default class parameters' do
     let(:params) { {} }

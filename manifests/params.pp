@@ -3,7 +3,7 @@
 # Defines all the variables used in the module.
 #
 class timezone::params {
-  case $::osfamily {
+  case $::facts['os']['family'] {
     'Debian': {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
@@ -19,7 +19,7 @@ class timezone::params {
       $package = 'tzdata'
       $zoneinfo_dir = '/usr/share/zoneinfo/'
       $localtime_file = '/etc/localtime'
-      if $::operatingsystemmajrelease == '7' {
+      if $::facts['os']['release']['major'] == '7' {
         $timezone_file = false
         $timezone_update = 'timedatectl set-timezone '
         $timezone_update_arg = true
@@ -83,11 +83,7 @@ class timezone::params {
       $timezone_file = false
     }
     default: {
-      case $::operatingsystem {
-        default: {
-          fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-        }
-      }
+      fail("Unsupported platform: ${::facts['os']['family']}/${::facts['os']['release']['major']}")
     }
   }
 }

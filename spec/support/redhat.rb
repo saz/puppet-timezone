@@ -1,5 +1,5 @@
 shared_examples 'RedHat' do
-  let(:facts) { { osfamily: 'RedHat', operatingsystemmajrelease: '6' } }
+  let(:facts) { { os: {"name"=>"RedHat", "family"=>"RedHat", "release"=>{"major"=>"6", "full"=>"6.7"}, } } }
 
   describe 'when using default class parameters' do
     let(:params) { {} }
@@ -30,7 +30,7 @@ shared_examples 'RedHat' do
   end
 
   context 'when RHEL 6' do
-    let(:facts) { { osfamily: 'RedHat', operatingsystemmajrelease: '6' } }
+    let(:facts) { { os: {"name"=>"RedHat", "family"=>"RedHat", "release"=>{"major"=>"6", "full"=>"6.7"}, } } }
 
     it { is_expected.to contain_file('/etc/sysconfig/clock').with_ensure('file') }
     it { is_expected.to contain_file('/etc/sysconfig/clock').with_content(%r{^ZONE="Etc\/UTC"$}) }
@@ -50,7 +50,7 @@ shared_examples 'RedHat' do
   end
 
   context 'when RHEL 7' do
-    let(:facts) { { osfamily: 'RedHat', operatingsystemmajrelease: '7' } }
+    let(:facts) { { os: {"name"=>"RedHat", "family"=>"RedHat", "release"=>{"major"=>"7", "full"=>"7.3"}, } } }
 
     it { is_expected.not_to contain_file('/etc/sysconfig/clock').with_ensure('file') }
     it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone  Etc/UTC') }
