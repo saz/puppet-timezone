@@ -73,7 +73,7 @@ class timezone (
   }
 
   if $timezone::params::package {
-    if $package_ensure == 'present' and $::osfamily == 'Debian' {
+    if $package_ensure == 'present' and $::facts['os']['family'] == 'Debian' {
       $_area = split($timezone, '/')
       $area = $_area[0]
       $_zone = split($timezone, '/')

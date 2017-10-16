@@ -1,5 +1,5 @@
 shared_examples 'Gentoo' do
-  let(:facts) { { osfamily: 'Gentoo' } }
+  let(:facts) { { os: {"name"=>"Gentoo", "family"=>"Gentoo", } } }
 
   describe 'when using default class parameters' do
     let(:params) { {} }

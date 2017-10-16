@@ -1,5 +1,5 @@
 shared_examples 'FreeBSD' do
-  let(:facts) { { osfamily: 'FreeBSD' } }
+  let(:facts) { { os: {"name"=>"FreeBSD", "family"=>"FreeBSD", } } }
 
   describe 'when using default class parameters' do
     let(:params) { {} }
