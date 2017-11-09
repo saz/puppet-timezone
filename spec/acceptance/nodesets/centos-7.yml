@@ -8,4 +8,4 @@ HOSTS:
     docker_image_commands:
       - 'yum install -y crontabs tar wget'
 CONFIG:
-  type: foss
+  type: aio

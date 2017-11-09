@@ -1,57 +1,52 @@
-# Class: timezone
-#
 # This module manages timezone settings
 #
-# Parameters:
-#   [*timezone*]
+# @param timezone
 #     The name of the timezone.
-#     Default: UTC
 #
-#   [*ensure*]
+# @param ensure
 #     Ensure if present or absent.
-#     Default: present
 #
-#   [*autoupgrade*]
+# @param autoupgrade
 #     Upgrade package automatically, if there is a newer version.
-#     Default: false
 #
-#   [*package*]
+# @param package
 #     Name of the package.
 #     Only set this, if your platform is not supported or you know, what you're doing.
-#     Default: auto-set, platform specific
 #
-#   [*config_file*]
+# @param config_file
 #     Main configuration file.
 #     Only set this, if your platform is not supported or you know, what you're doing.
-#     Default: auto-set, platform specific
 #
-#   [*zoneinfo_dir*]
+# @param zoneinfo_dir
 #     Source directory of zoneinfo files.
 #     Only set this, if your platform is not supported or you know, what you're doing.
 #     Default: auto-set, platform specific
 #
-#   [*hwutc*]
+# @param hwutc
 #     Is the hardware clock set to UTC? (true or false)
-#     Default: undefined
 #
-# Actions:
-#   Installs tzdata and configures timezone
+# @param notify_services
+#     List of services to notify
 #
-# Requires:
-#   Nothing
-#
-# Sample Usage:
+# @example
 #   class { 'timezone':
 #     timezone => 'Europe/Berlin',
 #   }
 #
-# [Remember: No empty lines between comments and class definition]
 class timezone (
-  Enum['present','absent'] $ensure = 'present',
-  String[1] $timezone = 'Etc/UTC',
-  Boolean $hwutc = true,
-  Boolean $autoupgrade = false
-) inherits timezone::params {
+  String                   $timezone                       = 'Etc/UTC',
+  Enum['present','absent'] $ensure                         = 'present',
+  Optional[Boolean]        $hwutc                          = undef,
+  Boolean                  $autoupgrade                    = false,
+  Optional[Array[String]]  $notify_services                = undef,
+  Optional[String]         $package                        = 'tzdata',
+  String                   $zoneinfo_dir                   = '/usr/share/zoneinfo/',
+  String                   $localtime_file                 = '/etc/localtime',
+  Optional[String]         $timezone_file                  = undef,
+  Optional[String]         $timezone_file_template         = 'timezone/clock.erb',
+  Optional[Boolean]        $timezone_file_supports_comment = undef,
+  Optional[String]         $timezone_update                = undef
+) {
 
   case $ensure {
     /(present)/: {
@@ -60,11 +55,13 @@ class timezone (
       } else {
         $package_ensure = 'present'
       }
+      $localtime_ensure = 'file'
       $timezone_ensure = 'file'
     }
     /(absent)/: {
       # Leave package installed, as it is a system dependency
       $package_ensure = 'present'
+      $localtime_ensure = 'absent'
       $timezone_ensure = 'absent'
     }
     default: {
@@ -72,64 +69,52 @@ class timezone (
     }
   }
 
-  if $timezone::params::package {
-    if $package_ensure == 'present' and $::osfamily == 'Debian' {
-      $_area = split($timezone, '/')
-      $area = $_area[0]
-      $_zone = split($timezone, '/')
-      $zone = $_zone[1]
-      debconf { 'update_debconf area':
-        item  => 'tzdata/Areas',
-        type  => 'select',
-        value => $area,
+  if $package {
+    if $package_ensure == 'present' and $facts['os']['family'] == 'Debian' {
+      $_tz = split($timezone, '/')
+      $area = $_tz[0]
+      $zone = $_tz[1]
+      exec { 'update_debconf area':
+        command => "echo tzdata tzdata/Areas select ${area} | debconf-set-selections",
+        unless  => "debconf-get-selections |grep -q -E \"^tzdata\\s+tzdata/Areas\\s+select\\s+${area}\"",
+        path    => $facts['path'],
       }
-      debconf { 'update_debconf zone':
-        item  => "tzdata/Zones/${area}",
-        type  => 'select',
-        value => $zone,
+      exec { 'update_debconf zone':
+        command => "echo tzdata tzdata/Zones/${area} select ${timezone} | debconf-set-selections",
+        unless  => "debconf-get-selections |grep -E \"^tzdata\\s+tzdata/Zones/${area}\\s+select\\s+${zone}\"",
+        path    => $facts['path'],
       }
     }
-    package { $timezone::params::package:
+    package { $package:
       ensure => $package_ensure,
-      before => File[$timezone::params::localtime_file],
+      before => File[$localtime_file],
     }
   }
 
-  if $timezone::params::timezone_file != false {
-    file { $timezone::params::timezone_file:
+  if $timezone_file {
+    file { $timezone_file:
       ensure  => $timezone_ensure,
-      content => template($timezone::params::timezone_file_template),
-      notify  => Exec['update_timezone'],
+      content => template($timezone_file_template),
+      notify  => $notify_services,
+    }
+    if $ensure == 'present' and $timezone_update {
+      $e_command = $facts['os']['family'] ? {
+        /(Suse|Archlinux)/ => "${timezone_update} ${timezone}",
+        default            => $timezone_update,
+      }
+      exec { 'update_timezone':
+        command     => $e_command,
+        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+        subscribe   => File[$timezone_file],
+        refreshonly => true,
+      }
     }
   }
 
-  if $ensure == 'present' and $timezone::params::timezone_update {
-    $e_command = $timezone::params::timezone_update_arg ? {
-      true  => "${timezone::params::timezone_update} ${timezone}",
-      false => $timezone::params::timezone_update
-    }
-    exec { 'update_timezone':
-      command     => $e_command,
-      path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-      refreshonly => true,
-    }
+  file { $localtime_file:
+    ensure => $localtime_ensure,
+    source => "file://${zoneinfo_dir}/${timezone}",
+    notify => $notify_services,
   }
 
-  if $ensure == 'absent' {
-    file { $timezone::params::localtime_file:
-      ensure => $ensure,
-    }
-  } elsif $timezone::params::localtime_file_type == 'link' {
-    file { $timezone::params::localtime_file:
-      ensure => $timezone::params::localtime_file_type,
-      target => "${timezone::params::zoneinfo_dir}${timezone}",
-    }
-  } elsif $timezone::params::localtime_file_type == 'file' {
-    file { $timezone::params::localtime_file:
-      ensure => $timezone::params::localtime_file_type,
-      source => "file://${timezone::params::zoneinfo_dir}${timezone}",
-      links  => follow,
-      mode   => '0644',
-    }
-  }
 }
