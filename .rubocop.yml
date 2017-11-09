@@ -1,6 +1,6 @@
 require: rubocop-rspec
 AllCops:
-  TargetRubyVersion: 1.9
+  TargetRubyVersion: 2.2
   Include:
     - ./**/*.rb
   Exclude:
@@ -29,9 +29,6 @@ Lint/EnsureReturn:
   Enabled: true
 
 Lint/HandleExceptions:
-  Enabled: true
-
-Lint/LiteralInCondition:
   Enabled: true
 
 Lint/ShadowingOuterLocalVariable:
@@ -120,7 +117,7 @@ Lint/Void:
 Layout/AccessModifierIndentation:
   Enabled: true
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: true
 
 Style/Alias:
@@ -156,7 +153,7 @@ Layout/CaseIndentation:
 Style/CharacterLiteral:
   Enabled: true
 
-Style/ClassAndModuleCamelCase:
+Naming/ClassAndModuleCamelCase:
   Enabled: true
 
 Style/ClassAndModuleChildren:
@@ -254,7 +251,7 @@ Style/CommentAnnotation:
 Metrics/CyclomaticComplexity:
   Enabled: false
 
-Style/ConstantName:
+Naming/ConstantName:
   Enabled: true
 
 Style/Documentation:
@@ -363,7 +360,7 @@ Style/UnlessElse:
 Style/VariableInterpolation:
   Enabled: true
 
-Style/VariableName:
+Naming/VariableName:
   Enabled: true
 
 Style/WhileUntilDo:
@@ -372,7 +369,7 @@ Style/WhileUntilDo:
 Style/EvenOdd:
   Enabled: true
 
-Style/FileName:
+Naming/FileName:
   Enabled: true
 
 Style/For:
@@ -381,7 +378,7 @@ Style/For:
 Style/Lambda:
   Enabled: true
 
-Style/MethodName:
+Naming/MethodName:
   Enabled: true
 
 Style/MultilineTernaryOperator:
@@ -417,7 +414,7 @@ Style/NumericLiterals:
 Style/OneLineConditional:
   Enabled: true
 
-Style/OpMethod:
+Naming/BinaryOperatorParameterName:
   Enabled: true
 
 Style/ParenthesesAroundCondition:
@@ -429,7 +426,7 @@ Style/PercentLiteralDelimiters:
 Style/PerlBackrefs:
   Enabled: true
 
-Style/PredicateName:
+Naming/PredicateName:
   Enabled: true
 
 Style/RedundantException:
@@ -516,3 +513,5 @@ RSpec/ExampleLength:
   Enabled: False
 RSpec/NestedGroups:                                                                                                                                                                                              
   Max: 4 
+RSpec/MultipleExpectations:
+  Max: 2
