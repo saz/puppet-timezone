@@ -74,17 +74,22 @@ class timezone (
       $_tz = split($timezone, '/')
       $area = $_tz[0]
       $zone = $_tz[1]
-      exec { 'update_debconf area':
-        command => "echo tzdata tzdata/Areas select ${area} | debconf-set-selections",
-        unless  => "debconf-get-selections |grep -q -E \"^tzdata\\s+tzdata/Areas\\s+select\\s+${area}\"",
-        path    => $facts['path'],
+
+      debconf {
+        'tzdata/Areas':
+          package => 'tzdata',
+          item    => 'tzdata/Areas',
+          type    => 'select',
+          value   => $area;
+        "tzdata/Zones/${area}":
+          package => 'tzdata',
+          item    => "tzdata/Zones/${area}",
+          type    => 'select',
+          value   => $zone;
       }
-      exec { 'update_debconf zone':
-        command => "echo tzdata tzdata/Zones/${area} select ${timezone} | debconf-set-selections",
-        unless  => "debconf-get-selections |grep -E \"^tzdata\\s+tzdata/Zones/${area}\\s+select\\s+${zone}\"",
-        path    => $facts['path'],
-      }
+      -> Package[$package]
     }
+
     package { $package:
       ensure => $package_ensure,
       before => File[$localtime_file],
