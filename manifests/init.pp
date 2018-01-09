@@ -119,6 +119,7 @@ class timezone (
   file { $localtime_file:
     ensure => $localtime_ensure,
     source => "file://${zoneinfo_dir}/${timezone}",
+    links  => follow,
     notify => $notify_services,
   }
 
