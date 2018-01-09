@@ -39,7 +39,7 @@ class timezone (
   Optional[Boolean]        $hwutc                          = undef,
   Boolean                  $autoupgrade                    = false,
   Optional[Array[String]]  $notify_services                = undef,
-  Optional[String]         $package                        = 'tzdata',
+  Optional[String]         $package                        = undef,
   String                   $zoneinfo_dir                   = '/usr/share/zoneinfo/',
   String                   $localtime_file                 = '/etc/localtime',
   Optional[String]         $timezone_file                  = undef,
