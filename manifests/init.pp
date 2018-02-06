@@ -55,7 +55,7 @@ class timezone (
       } else {
         $package_ensure = 'present'
       }
-      $localtime_ensure = 'file'
+      $localtime_ensure = 'link'
       $timezone_ensure = 'file'
     }
     /(absent)/: {
@@ -118,8 +118,7 @@ class timezone (
 
   file { $localtime_file:
     ensure => $localtime_ensure,
-    source => "file://${zoneinfo_dir}/${timezone}",
-    links  => follow,
+    target => "${zoneinfo_dir}/${timezone}",
     notify => $notify_services,
   }
 
