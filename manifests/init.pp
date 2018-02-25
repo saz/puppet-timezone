@@ -115,6 +115,18 @@ class timezone (
       }
     }
   }
+  else {
+    if $facts['os']['family'] == 'RedHat' {
+      $major = $facts['os']['release']['major'] + 0 # adding converts to number
+      if $major >= 7 {
+        exec { 'update_timezone':
+          command => "timedatectl set-timezone ${timezone}",
+          path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+          unless  => "timedatectl status | grep 'Time zone:' | grep -q ${timezone}",
+        }
+      }
+    }
+  }
 
   file { $localtime_file:
     ensure => $localtime_ensure,
