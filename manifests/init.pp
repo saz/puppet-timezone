@@ -149,7 +149,7 @@ class timezone (
       exec {"Set local rtc to ${local_rtc_string}":
         path    => '/bin',
         command => "timedatectl set-local-rtc ${num_boolean}",
-        unless  => "grep ${local_rtc_string} /etc/adjtime"
+        unless  => "grep ${local_rtc_string} /etc/adjtime",
       }
     }
   }
