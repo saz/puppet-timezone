@@ -28,6 +28,12 @@
 # @param notify_services
 #     List of services to notify
 #
+# @param set_local_rtc
+#     This parameter effects settings in /etc/adjtime but is set using timedatectl command.
+#     Currently this parameter is only supported for Red Hat > 7.x
+#     The default value is false, which has been steered by the recommendation in th man page for timedatectl.
+#     Default: false
+#
 # @example
 #   class { 'timezone':
 #     timezone => 'Europe/Berlin',
@@ -36,16 +42,17 @@
 class timezone (
   String                   $timezone                       = 'Etc/UTC',
   Enum['present','absent'] $ensure                         = 'present',
-  Optional[Boolean]        $hwutc                          = undef,
-  Boolean                  $autoupgrade                    = false,
-  Optional[Array[String]]  $notify_services                = undef,
-  Optional[String]         $package                        = undef,
   String                   $zoneinfo_dir                   = '/usr/share/zoneinfo/',
   String                   $localtime_file                 = '/etc/localtime',
+  Boolean                  $autoupgrade                    = false,
+  Optional[Boolean]        $hwutc                          = undef,
+  Optional[Array[String]]  $notify_services                = undef,
+  Optional[String]         $package                        = undef,
   Optional[String]         $timezone_file                  = undef,
   Optional[String]         $timezone_file_template         = 'timezone/clock.erb',
   Optional[Boolean]        $timezone_file_supports_comment = undef,
-  Optional[String]         $timezone_update                = undef
+  Optional[String]         $timezone_update                = undef,
+  Optional[Boolean]        $set_local_rtc                  = false,
 ) {
 
   case $ensure {
@@ -133,6 +140,18 @@ class timezone (
     source => "file://${zoneinfo_dir}/${timezone}",
     links  => follow,
     notify => $notify_services,
+  }
+
+  if $set_local_rtc != undef {
+    if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] >= '7') {
+      $num_boolean = $set_local_rtc ? { true => 1, false => 0}
+      $local_rtc_string = $set_local_rtc ? { true => 'LOCAL', false => 'UTC'}
+      exec {"Set local rtc to ${local_rtc_string}":
+        path    => '/bin',
+        command => "timedatectl set-local-rtc ${num_boolean}",
+        unless  => "grep ${local_rtc_string} /etc/adjtime",
+      }
+    }
   }
 
 }
