@@ -1,16 +1,16 @@
 shared_examples 'RedHat' do
-  let(:facts) do
-    {
-      :os => {
-        :name => 'CentOS',
-        :family => 'RedHat',
-        :release => { :major => '6' }
-      }
-    }
-  end
 
-  describe 'when using default class parameters' do
+  describe 'when using default class parameters with osfamily => RedHat and major release => 6' do
     let(:params) { {} }
+    let(:facts) do
+      {
+        :os => {
+          :name => 'CentOS',
+          :family => 'RedHat',
+          :release => { :major => '6' }
+        }
+      }
+    end
 
     it { is_expected.to create_class('timezone') }
 
@@ -49,11 +49,25 @@ shared_examples 'RedHat' do
       it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }
     end
 
-    context 'when RHEL 7' do
-      let(:facts) { { :os => { :release => { :major => '7' } } } }
+    include_examples 'validate parameters'
+  end
 
-      it { is_expected.not_to contain_file('/etc/sysconfig/clock').with_ensure('file') }
+  describe 'when using default class parameters with osfamily => RedHat and major release => 7' do
+    let(:params) { {} }
+    let(:facts) do
+      {
+        :os => {
+          :name => 'CentOS',
+          :family => 'RedHat',
+          :release => { :major => '7' }
+        }
+      }
     end
+
+    it { is_expected.to create_class('timezone') }
+    it { is_expected.not_to contain_file('/etc/sysconfig/clock') }
+    it { is_expected.to contain_file('/etc/localtime').with_ensure('file') }
+    it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC').with_unless("timedatectl status | grep 'Time zone:' | grep -q Etc/UTC") }
 
     include_examples 'validate parameters'
   end

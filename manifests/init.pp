@@ -102,29 +102,28 @@ class timezone (
       content => template($timezone_file_template),
       notify  => $notify_services,
     }
-    if $ensure == 'present' and $timezone_update {
-      $e_command = $facts['os']['family'] ? {
-        /(Suse|Archlinux)/ => "${timezone_update} ${timezone}",
-        default            => $timezone_update,
-      }
-      exec { 'update_timezone':
-        command     => $e_command,
-        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-        subscribe   => File[$timezone_file],
-        refreshonly => true,
-      }
-    }
+
+    $exec_subscribe = File[$timezone_file]
+    $exec_unless = undef
+    $exec_refreshonly = true
+  } else {
+    $exec_subscribe = undef
+    $exec_unless = lookup('timezone::timezone_update_check_cmd', Optional[String], 'first', undef)
+    $exec_refreshonly = false
   }
-  else {
-    if $facts['os']['family'] == 'RedHat' {
-      $major = $facts['os']['release']['major'] + 0 # adding converts to number
-      if $major >= 7 {
-        exec { 'update_timezone':
-          command => "timedatectl set-timezone ${timezone}",
-          path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-          unless  => "timedatectl status | grep 'Time zone:' | grep -q ${timezone}",
-        }
-      }
+
+  if $ensure == 'present' and $timezone_update {
+    if $exec_unless {
+      $unless_cmd = sprintf($exec_unless, $timezone)
+    } else {
+      $unless_cmd = undef
+    }
+    exec { 'update_timezone':
+      command     => sprintf($timezone_update, $timezone),
+      path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+      unless      => $unless_cmd,
+      subscribe   => $exec_subscribe,
+      refreshonly => $exec_refreshonly,
     }
   }
 
@@ -134,5 +133,4 @@ class timezone (
     links  => follow,
     notify => $notify_services,
   }
-
 }
