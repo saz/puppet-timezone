@@ -103,13 +103,23 @@ class timezone (
       notify  => $notify_services,
     }
 
-    $exec_subscribe = File[$timezone_file]
-    $exec_unless = undef
-    $exec_refreshonly = true
+    if $ensure == 'present' and $timezone_update {
+      exec { 'update_timezone':
+        command     => sprintf($timezone_update, $timezone),
+        subscribe   => File[$timezone_file],
+        refreshonly => true,
+        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+      }
+    }
   } else {
-    $exec_subscribe = undef
-    $exec_unless = lookup('timezone::timezone_update_check_cmd', Optional[String], 'first', undef)
-    $exec_refreshonly = false
+    if $ensure == 'present' and $timezone_update {
+      $unless_cmd = lookup('timezone::timezone_update_check_cmd', String, 'first')
+      exec { 'update_timezone':
+        command => sprintf($timezone_update, $timezone),
+        unless  => sprintf($unless_cmd, $timezone),
+        path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+      }
+    }
   }
 
   if $ensure == 'present' and $timezone_update {
