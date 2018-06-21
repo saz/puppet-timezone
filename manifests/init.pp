@@ -106,8 +106,7 @@ class timezone (
     $exec_subscribe = File[$timezone_file]
     $exec_unless = undef
     $exec_refreshonly = true
-  }
-  else {
+  } else {
     $exec_subscribe = undef
     $exec_unless = lookup('timezone::timezone_update_check_cmd', Optional[String], 'first', undef)
     $exec_refreshonly = false
@@ -116,8 +115,7 @@ class timezone (
   if $ensure == 'present' and $timezone_update {
     if $exec_unless {
       $unless_cmd = sprintf($exec_unless, $timezone)
-    }
-    else {
+    } else {
       $unless_cmd = undef
     }
     exec { 'update_timezone':
