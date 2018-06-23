@@ -122,21 +122,6 @@ class timezone (
     }
   }
 
-  if $ensure == 'present' and $timezone_update {
-    if $exec_unless {
-      $unless_cmd = sprintf($exec_unless, $timezone)
-    } else {
-      $unless_cmd = undef
-    }
-    exec { 'update_timezone':
-      command     => sprintf($timezone_update, $timezone),
-      path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-      unless      => $unless_cmd,
-      subscribe   => $exec_subscribe,
-      refreshonly => $exec_refreshonly,
-    }
-  }
-
   file { $localtime_file:
     ensure => $localtime_ensure,
     source => "file://${zoneinfo_dir}/${timezone}",
