@@ -147,4 +147,24 @@ class timezone (
     links  => follow,
     notify => $notify_services,
   }
+
+  if $ensure == 'present' and $hwutc != undef {
+    $hwclock_cmd = lookup('timezone::hwclock_cmd', Optional[String], 'first', undef)
+    if ($hwclock_cmd == '') or ($hwclock_cmd == undef) { fail("")}
+    $check_hwclock_enabled_cmd = lookup('timezone::check_hwclock_enabled_cmd', Optional[String], 'first', undef)
+    $check_hwclock_disabled_cmd = lookup('timezone::check_hwclock_disabled_cmd', Optional[String], 'first', undef)
+    # The logic gets reversed to allow for the parameter to make more sense to
+    # the end user.
+    if ! $hwutc {
+      $hwclock_unless = $check_hwclock_enabled_cmd
+    }
+    else {
+      $hwclock_unless = $check_hwclock_disabled_cmd
+    }
+    exec { 'set_hwclock':
+      command => sprintf($hwclock_cmd, (! $hwutc)),
+      unless  => $hwclock_unless,
+      path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+    }
+  }
 }
