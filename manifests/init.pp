@@ -122,6 +122,25 @@ class timezone (
     }
   }
 
+  if $ensure == 'present' and $hwutc != undef {
+    $hwclock_cmd = lookup('timezone::set_hwclock_cmd', String, 'first', undef)
+    $hwclock_check_enabled_cmd = lookup('timezone::check_hwclock_enabled_cmd', String, 'first', undef)
+    $hwclock_check_disabled_cmd = lookup('timezone::check_hwclock_disabled_cmd', String, 'first', undef)
+
+    if $hwclock_cmd != '' and $hwclock_cmd != undef {
+      if ! $hwutc {
+        $hwclock_unless = $hwclock_check_enabled_cmd
+      } else {
+        $hwclock_unless = $hwclock_check_disabled_cmd
+      }
+      exec { 'set_hwclock':
+        command => sprintf($hwclock_cmd, (! $hwutc)),
+        unless  => $unless,
+        path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+      }
+    }
+  }
+
   file { $localtime_file:
     ensure => $localtime_ensure,
     source => "file://${zoneinfo_dir}/${timezone}",
