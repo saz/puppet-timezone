@@ -135,7 +135,7 @@ class timezone (
       }
       exec { 'set_hwclock':
         command => sprintf($hwclock_cmd, (! $hwutc)),
-        unless  => $unless,
+        unless  => $hwclock_unless,
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
       }
     }
