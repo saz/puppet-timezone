@@ -123,7 +123,7 @@ class timezone (
   }
 
   if $ensure == 'present' and $hwutc != undef {
-    $hwclock_cmd = lookup('timezone::set_hwclock_cmd', Optional[String], 'first', undef)
+    $hwclock_cmd = lookup('timezone::hwclock_cmd', Optional[String], 'first', undef)
     $hwclock_check_enabled_cmd = lookup('timezone::check_hwclock_enabled_cmd', Optional[String], 'first', undef)
     $hwclock_check_disabled_cmd = lookup('timezone::check_hwclock_disabled_cmd', Optional[String], 'first', undef)
 
