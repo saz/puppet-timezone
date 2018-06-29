@@ -70,7 +70,8 @@ class timezone (
   }
 
   if $package {
-    if $package_ensure == 'present' and $facts['os']['family'] == 'Debian' {
+    $use_debconf = lookup('timezone::use_debconf', Boolean, 'first', false)
+    if $package_ensure == 'present' and $use_debconf {
       $_tz = split($timezone, '/')
       $area = $_tz[0]
       $zone = $_tz[1]
