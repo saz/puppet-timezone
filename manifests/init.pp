@@ -146,6 +146,7 @@ class timezone (
     ensure => $localtime_ensure,
     source => "file://${zoneinfo_dir}/${timezone}",
     links  => follow,
+    mode   => '0644',
     notify => $notify_services,
   }
 }
