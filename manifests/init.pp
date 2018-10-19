@@ -144,7 +144,8 @@ class timezone (
 
   file { $localtime_file:
     ensure => $localtime_ensure,
-    source => "${zoneinfo_dir}/${timezone}",
+    target => "${zoneinfo_dir}/${timezone}",
+    force  => true,
     notify => $notify_services,
   }
 }
