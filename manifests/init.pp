@@ -97,6 +97,13 @@ class timezone (
     }
   }
 
+  file { $localtime_file:
+    ensure => $localtime_ensure,
+    target => "${zoneinfo_dir}/${timezone}",
+    force  => true,
+    notify => $notify_services,
+  }
+
   if $timezone_file {
     file { $timezone_file:
       ensure  => $timezone_ensure,
@@ -110,6 +117,7 @@ class timezone (
         subscribe   => File[$timezone_file],
         refreshonly => true,
         path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+        require     => File[$localtime_file],
       }
     }
   } else {
@@ -119,6 +127,7 @@ class timezone (
         command => sprintf($timezone_update, $timezone),
         unless  => sprintf($unless_cmd, $timezone),
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+        require => File[$localtime_file],
       }
     }
   }
@@ -142,9 +151,4 @@ class timezone (
     }
   }
 
-  file { $localtime_file:
-    ensure => $localtime_ensure,
-    source => "${zoneinfo_dir}/${timezone}",
-    notify => $notify_services,
-  }
 }

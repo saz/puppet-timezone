@@ -26,14 +26,14 @@ shared_examples 'Gentoo' do
     it { is_expected.to contain_exec('update_timezone').with_command(%r{^emerge --config timezone-data$}) }
     it do
       is_expected.to contain_file('/etc/localtime').with(:ensure => 'link',
-                                                         :source => '/usr/share/zoneinfo/Etc/UTC')
+                                                         :target => '/usr/share/zoneinfo/Etc/UTC')
     end
 
     context 'when timezone => "Europe/Berlin"' do
       let(:params) { { :timezone => 'Europe/Berlin' } }
 
       it { is_expected.to contain_file('/etc/timezone').with_content(%r{^Europe/Berlin$}) }
-      it { is_expected.to contain_file('/etc/localtime').with_source('/usr/share/zoneinfo/Europe/Berlin') }
+      it { is_expected.to contain_file('/etc/localtime').with_target('/usr/share/zoneinfo/Europe/Berlin') }
     end
 
     context 'when autoupgrade => true' do
