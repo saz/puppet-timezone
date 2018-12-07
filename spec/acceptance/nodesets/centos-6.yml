@@ -1,8 +1,8 @@
 HOSTS:
-  centos-7:
-    platform: el-7-x86_64
+  centos-6:
+    platform: el-6-amd64
     hypervisor : docker
-    image: centos:7
+    image: centos:6
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
@@ -12,3 +12,4 @@ CONFIG:
 <% if ENV['BEAKER_PUPPET_COLLECTION'] -%>
   puppet_collection: <%= ENV['BEAKER_PUPPET_COLLECTION'] %>
 <% end -%>
+

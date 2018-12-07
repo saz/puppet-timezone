@@ -109,6 +109,7 @@ class timezone (
         command     => sprintf($timezone_update, $timezone),
         subscribe   => File[$timezone_file],
         refreshonly => true,
+        require     => File[$localtime_file],
         path        => '/usr/bin:/usr/sbin:/bin:/sbin',
       }
     }
@@ -118,6 +119,7 @@ class timezone (
       exec { 'update_timezone':
         command => sprintf($timezone_update, $timezone),
         unless  => sprintf($unless_cmd, $timezone),
+        require => File[$localtime_file],
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
       }
     }

@@ -23,7 +23,10 @@ shared_examples 'Gentoo' do
 
     it { is_expected.to contain_file('/etc/timezone').with_ensure('file') }
     it { is_expected.to contain_file('/etc/timezone').with_content(%r{^Etc/UTC$}) }
-    it { is_expected.to contain_exec('update_timezone').with_command(%r{^emerge --config timezone-data$}) }
+    it { is_expected.to contain_exec('update_timezone').with({
+      :command => %r{^emerge --config timezone-data$},
+      :require => 'File[/etc/localtime]'
+     })}
     it do
       is_expected.to contain_file('/etc/localtime').with(:ensure => 'link',
                                                          :target => '/usr/share/zoneinfo/Etc/UTC')

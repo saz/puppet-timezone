@@ -67,7 +67,11 @@ shared_examples 'RedHat' do
     it { is_expected.to create_class('timezone') }
     it { is_expected.not_to contain_file('/etc/sysconfig/clock') }
     it { is_expected.to contain_file('/etc/localtime').with_ensure('link') }
-    it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC').with_unless('timedatectl status | grep "Timezone:\|Time zone:" | grep -q Etc/UTC') }
+    it { is_expected.to contain_exec('update_timezone').with({
+      :command => 'timedatectl set-timezone Etc/UTC',
+      :unless  => 'timedatectl status | grep "Timezone:\|Time zone:" | grep -q Etc/UTC',
+      :require => 'File[/etc/localtime]'
+    })}
 
     include_examples 'validate parameters'
   end

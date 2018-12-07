@@ -16,7 +16,10 @@ shared_examples 'Debian' do
     it { is_expected.to contain_file('/etc/timezone') }
     it { is_expected.to contain_file('/etc/timezone').with_ensure('file') }
     it { is_expected.to contain_file('/etc/timezone').with_content(%r{Etc/UTC}) }
-    it { is_expected.to contain_exec('update_timezone').with_command(%r{^dpkg-reconfigure -f noninteractive tzdata$}) }
+    it { is_expected.to contain_exec('update_timezone').with({
+      'command' => %r{^dpkg-reconfigure -f noninteractive tzdata$},
+      'require' => 'File[/etc/localtime]'
+    })}
 
     it do
       is_expected.to contain_package('tzdata').with(:ensure => 'present',

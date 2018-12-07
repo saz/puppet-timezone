@@ -1,6 +1,9 @@
 require 'beaker-rspec'
+require 'beaker/puppet_install_helper'
 
-install_puppet_on hosts
+
+run_puppet_install_helper
+#install_puppet_on hosts
 
 RSpec.configure do |c|
   module_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
@@ -15,6 +18,7 @@ RSpec.configure do |c|
     puppet_module_install(:source => module_root, :module_name => module_name)
     hosts.each do |host|
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), :acceptable_exit_codes => [0, 1]
+      on host, puppet('module', 'install', 'stm/debconf'), :acceptable_exit_codes => [0, 1]
     end
   end
 end

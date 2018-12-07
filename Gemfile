@@ -38,8 +38,11 @@ end
 
 group :system_tests do
   if (beaker_version = ENV['BEAKER_VERSION'])
-    gem 'beaker', *location_for(beaker_version)
+    gem 'beaker', *location_for(ENV['BEAKER_VERSION'])
+  else
+    gem 'beaker'
   end
+  gem 'beaker-docker'
   if (beaker_rspec_version = ENV['BEAKER_RSPEC_VERSION'])
     gem 'beaker-rspec', *location_for(beaker_rspec_version)
   else
@@ -54,7 +57,18 @@ else
   gem 'facter', require: false, groups: [:test]
 end
 
-ENV['PUPPET_VERSION'].nil? ? puppetversion = '~> 4.0' : puppetversion = ENV['PUPPET_VERSION'].to_s
+if ENV['PUPPET_VERSION'].nil?
+  case ENV['BEAKER_PUPPET_COLLECTION']
+  when 'puppet5'
+    puppetversion = '~> 5.0'
+  when 'puppet6'
+    puppetversion = '~> 6.0'
+  else
+    puppetversion = '~> 4.0'
+  end
+else
+  puppetversion = ENV['PUPPET_VERSION'].to_s
+end
 gem 'puppet', puppetversion, require: false, groups: [:test]
 
 # vim: syntax=ruby
