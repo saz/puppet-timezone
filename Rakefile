@@ -37,6 +37,6 @@ task test: [
   :metadata_lint,
   :lint,
   :syntax,
-  :spec
+  :spec,
 ]
 # vim: syntax=ruby
