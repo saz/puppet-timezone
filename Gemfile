@@ -2,16 +2,16 @@ source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 def location_for(place, fake_version = nil)
   if place =~ /^(git[:@][^#]*)#(.*)/
-    [fake_version, { git: Regexp.last_match(1), branch: Regexp.last_match(2), require: false }].compact
+    [fake_version, { git: $1, branch: $2, require: false }].compact
   elsif place =~ /^file:\/\/(.*)/
-    ['>= 0', { path: File.expand_path(Regexp.last_match(1)), require: false }]
+    ['>= 0', { path: File.expand_path($1), require: false }]
   else
     [place, { require: false }]
   end
 end
 
 group :test do
-  gem 'puppetlabs_spec_helper',                                     require: false
+  gem 'puppetlabs_spec_helper', '>= 2.11.0',                        require: false
   gem 'rspec-puppet',                                               require: false
   gem 'rspec-puppet-facts',                                         require: false
   gem 'rspec-puppet-utils',                                         require: false
@@ -25,8 +25,9 @@ group :test do
   gem 'metadata-json-lint',                                         require: false
   gem 'puppet-blacksmith',                                          require: false
   gem 'voxpupuli-release',                                          require: false, git: 'https://github.com/voxpupuli/voxpupuli-release-gem.git'
-  gem 'rubocop-rspec', '~> 1.5',                                    require: false if RUBY_VERSION >= '2.2.0'
-  gem 'json_pure', '<= 2.0.1',                                      require: false if RUBY_VERSION < '2.0.0'
+  gem 'puppet-strings', '~> 1.0',                                   require: false
+  gem 'rubocop', '~> 0.49.1',                                       require: false
+  gem 'rubocop-rspec',                                              require: false
   gem 'rspec-its',                                                  require: false
 end
 
@@ -43,10 +44,12 @@ group :system_tests do
   if (beaker_rspec_version = ENV['BEAKER_RSPEC_VERSION'])
     gem 'beaker-rspec', *location_for(beaker_rspec_version)
   else
-    gem 'beaker-rspec', require: false
+    gem 'beaker-rspec',  require: false
   end
-  gem 'beaker-puppet_install_helper', require: false
+  gem 'beaker-puppet_install_helper',  require: false
 end
+
+
 
 if (facterversion = ENV['FACTER_GEM_VERSION'])
   gem 'facter', facterversion.to_s, require: false, groups: [:test]
