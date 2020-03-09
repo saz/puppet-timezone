@@ -1,5 +1,4 @@
 shared_examples 'RedHat' do
-
   describe 'when using default class parameters with osfamily => RedHat and major release => 6' do
     let(:params) { {} }
     let(:facts) do
