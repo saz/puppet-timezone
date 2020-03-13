@@ -40,7 +40,7 @@
     }
   ],
   "name": "saz-timezone",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "source": "git://github.com/saz/puppet-timezone",
   "author": "saz",
   "license": "Apache-2.0",
