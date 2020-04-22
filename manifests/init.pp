@@ -122,11 +122,9 @@ class timezone (
       }
     }
   } else {
-    if $ensure == 'present' and $timezone_update {
-      $unless_cmd = lookup('timezone::timezone_update_check_cmd', String, 'first')
+    if $ensure == 'present' and $timezone_update and $facts['timezone'] != $timezone {
       exec { 'update_timezone':
         command => sprintf($timezone_update, $timezone),
-        unless  => sprintf($unless_cmd, $timezone),
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
         require => File[$localtime_file],
       }
