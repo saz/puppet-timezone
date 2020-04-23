@@ -13,6 +13,5 @@ RSpec.configure do |c|
   c.before :suite do
     install_module
     install_module_dependencies
-
   end
 end
