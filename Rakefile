@@ -7,6 +7,13 @@ begin
 rescue LoadError
 end
 
+PuppetLint.configuration.log_format = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
+
+desc 'Auto-correct puppet-lint offenses'
+task 'lint:auto_correct' do
+  Rake::Task[:lint_fix].invoke
+end
+
 desc 'Run acceptance tests'
 RSpec::Core::RakeTask.new(:acceptance) do |t|
   t.pattern = 'spec/acceptance'

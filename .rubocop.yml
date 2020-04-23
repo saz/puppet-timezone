@@ -1,18 +1,19 @@
 require: rubocop-rspec
 AllCops:
-  TargetRubyVersion: 2.2
+# Puppet Server 5 defaults to jruby 1.7 so TargetRubyVersion must stay at 1.9 until we drop support for puppet 5
+  TargetRubyVersion: 1.9
   Include:
     - ./**/*.rb
   Exclude:
     - files/**/*
     - vendor/**/*
-    - Gemfile
-    - Rakefile
     - .vendor/**/*
     - pkg/**/*
     - spec/fixtures/**/*
     - Gemfile
     - Rakefile
+    - Guardfile
+    - Vagrantfile
 Lint/ConditionPosition:
   Enabled: True
 
@@ -31,6 +32,9 @@ Lint/EnsureReturn:
 Lint/HandleExceptions:
   Enabled: True
 
+Lint/LiteralInCondition:
+  Enabled: True
+
 Lint/ShadowingOuterLocalVariable:
   Enabled: True
 
@@ -38,7 +42,7 @@ Lint/LiteralInInterpolation:
   Enabled: True
 
 Style/HashSyntax:
-  Enabled: False
+  Enabled: True
 
 Style/RedundantReturn:
   Enabled: True
@@ -197,6 +201,9 @@ Layout/TrailingBlankLines:
   Enabled: True
 
 Layout/SpaceInsideBlockBraces:
+  Enabled: True
+
+Layout/SpaceInsideBrackets:
   Enabled: True
 
 Layout/SpaceInsideHashLiteralBraces:
@@ -464,9 +471,6 @@ Metrics/ParameterLists:
 Lint/RequireParentheses:
   Enabled: True
 
-Layout/SpaceBeforeFirstArg:
-  Enabled: True
-
 Style/ModuleFunction:
   Enabled: True
 
@@ -482,17 +486,11 @@ Style/Encoding:
 Style/BlockDelimiters:
   Enabled: True
 
-Style/FormatStringToken:
-  Enabled: False
-
 Layout/MultilineBlockLayout:
   Enabled: True
 
 # 'Complexity' is very relative
 Metrics/AbcSize:
-  Enabled: False
-
-Metrics/BlockLength:
   Enabled: False
 
 # 'Complexity' is very relative
@@ -503,9 +501,13 @@ Lint/UselessAssignment:
   Enabled: True
 
 Layout/ClosingParenthesisIndentation:
-  Enabled: False
+  Enabled: True
 
 # RSpec
+
+RSpec/BeforeAfterAll:
+  Exclude:
+    - spec/acceptance/**/*
 
 # We don't use rspec in this way
 RSpec/DescribeClass:
@@ -514,7 +516,31 @@ RSpec/DescribeClass:
 # Example length is not necessarily an indicator of code quality
 RSpec/ExampleLength:
   Enabled: False
-RSpec/NestedGroups:                                                                                                                                                                                              
-  Max: 4 
-RSpec/MultipleExpectations:
-  Max: 2
+
+RSpec/NamedSubject:
+  Enabled: False
+
+# disabled for now since they cause a lot of issues
+# these issues aren't easy to fix
+RSpec/RepeatedDescription:
+  Enabled: False
+
+RSpec/NestedGroups:
+  Enabled: False
+
+# this is broken on ruby1.9
+Layout/IndentHeredoc:
+  Enabled: False
+
+# disable Yaml safe_load. This is needed to support ruby2.0.0 development envs
+Security/YAMLLoad:
+  Enabled: false
+
+# This affects hiera interpolation, as well as some configs that we push.
+Style/FormatStringToken:
+  Enabled: false
+
+# This is useful, but sometimes a little too picky about where unit tests files
+# are located.
+RSpec/FilePath:
+  Enabled: false
