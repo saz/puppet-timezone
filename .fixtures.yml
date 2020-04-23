@@ -1,4 +1,4 @@
 fixtures:
   repositories:
-    stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib"
-    debconf: "git://github.com/smoeding/puppet-debconf"
+    stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib"
+    debconf: "https://github.com/smoeding/puppet-debconf"
