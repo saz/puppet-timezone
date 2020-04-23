@@ -1,33 +1,27 @@
-sudo: false
+---
+dist: bionic
 language: ruby
 cache: bundler
-bundler_args: "--without system_tests development"
 before_install:
-- bundle -v
-- rm Gemfile.lock || true
-- gem update --system
-- gem update bundler
-- gem --version
-- bundle -v
+  - yes | gem update --system
+  - bundle --version
 script:
-- bundle exec rake $CHECK
+  - 'bundle exec rake $CHECK'
 matrix:
   fast_finish: true
   include:
-  - rvm: 2.3.1
-    env: PUPPET_VERSION="~> 4.0" STRICT_VARIABLES="yes" CHECK=test
-  - rvm: 2.3.1
-    env: PUPPET_VERSION="~> 4.0" STRICT_VARIABLES="yes" CHECK=rubocop
-  - rvm: 2.3.1
-    env: PUPPET_VERSION="~> 4.0" STRICT_VARIABLES="yes" CHECK=build FORGEDEPLOY=true
-  - rvm: 2.3.1
-    env: PUPPET_VERSION="~> 5.0" STRICT_VARIABLES="yes" CHECK=test
-  - rvm: 2.3.1
-    env: PUPPET_VERSION="~> 5.0" STRICT_VARIABLES="yes" CHECK=rubocop
+  - rvm: 2.4.4
+    bundler_args: --without system_tests development release
+    env: PUPPET_VERSION="~> 5.0" CHECK=test
   - rvm: 2.5.3
-    env: PUPPET_VERSION="~> 6.1" STRICT_VARIABLES="yes" CHECK=test
+    bundler_args: --without system_tests development release
+    env: PUPPET_VERSION="~> 6.0" CHECK=test_with_coveralls
   - rvm: 2.5.3
-    env: PUPPET_VERSION="~> 6.1" STRICT_VARIABLES="yes" CHECK=rubocop
+    bundler_args: --without system_tests development release
+    env: PUPPET_VERSION="~> 6.0" CHECK=rubocop
+  - rvm: 2.4.4
+    bundler_args: --without system_tests development release
+    env: PUPPET_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
 notifications:
   email: false
 deploy:
@@ -37,6 +31,7 @@ deploy:
     secure: VlSGdU3hHTPHYe+++BOrnVcZE8rFHEYtByHoymvbf++dZaGv1RgCYVGr2Vn33gaT/h4hho8rgRyep5F6sHJaDPZUprJ5WU3I/TnbQrm13C521Z2+PP5jhEjG9rMHze4+4vDVKdO8K9x0zErGDwHaf6+QF5lQH6ewIykLWXl0DRA=
   on:
     tags: true
+    # all_branches is required to use tags
     all_branches: true
-    rvm: 2.3.1
-    condition: "$FORGEDEPLOY = true"
+    # Only publish the build marked with "DEPLOY_TO_FORGE"
+    condition: "$DEPLOY_TO_FORGE = yes"

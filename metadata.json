@@ -1,5 +1,20 @@
 {
+  "name": "saz-timezone",
+  "version": "5.2.1",
+  "author": "saz",
+  "summary": "Manage timezone settings via Puppet",
+  "license": "Apache-2.0",
+  "source": "https://github.com/saz/puppet-timezone",
+  "project_page": "https://github.com/saz/puppet-timezone",
+  "issues_url": "https://github.com/saz/puppet-timezone/issues",
+  "description": "Manage timezone settings via Puppet",
   "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu"
+    },
+    {
+      "operatingsystem": "Debian"
+    },
     {
       "operatingsystem": "RedHat"
     },
@@ -13,16 +28,10 @@
       "operatingsystem": "Scientific"
     },
     {
-      "operatingsystem": "Debian"
-    },
-    {
-      "operatingsystem": "Ubuntu"
-    },
-    {
       "operatingsystem": "Gentoo"
     },
     {
-      "operatingsystem": "ArchLinux"
+      "operatingsystem": "Archlinux"
     },
     {
       "operatingsystem": "SLES",
@@ -36,19 +45,19 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.9.1 < 7.0.0"
+      "version_requirement": ">= 5.0.0 < 7.0.0"
     }
   ],
-  "name": "saz-timezone",
-  "version": "5.2.1",
-  "source": "git://github.com/saz/puppet-timezone",
-  "author": "saz",
-  "license": "Apache-2.0",
-  "summary": "Manage timezone settings via Puppet",
-  "description": "Manage timezone settings via Puppet",
-  "project_page": "https://github.com/saz/puppet-timezone",
   "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_requirement": ">=2.6.0 < 7.0.0" },
-    { "name": "stm/debconf", "version_requirement": ">= 2.0.0 < 3.0.0" }
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 2.6.0 < 7.0.0"
+    },
+    {
+      "name": "stm/debconf",
+      "version_requirement": ">= 2.0.0 < 3.0.0"
+    }
+  ],
+  "tags": [
   ]
 }
