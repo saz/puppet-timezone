@@ -50,7 +50,11 @@ group :system_tests do
   else
     gem 'beaker-rspec',  :require => false
   end
-  gem 'beaker-puppet_install_helper',  :require => false
+  gem 'beaker-hostgenerator', '>= 1.1.22',  :require => false
+  gem 'beaker-docker',                      :require => false
+  gem 'beaker-puppet',                      :require => false
+  gem 'beaker-puppet_install_helper',       :require => false
+  gem 'beaker-module_install_helper',       :require => false
 end
 
 group :release do
