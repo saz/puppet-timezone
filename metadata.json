@@ -1,6 +1,6 @@
 {
   "name": "saz-timezone",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "author": "saz",
   "summary": "Manage timezone settings via Puppet",
   "license": "Apache-2.0",
@@ -32,6 +32,13 @@
     },
     {
       "operatingsystem": "Archlinux"
+    },
+    {
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease": [
+        "11",
+        "12"
+      ]
     },
     {
       "operatingsystem": "SLES",
