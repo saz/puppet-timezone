@@ -1,4 +1,5 @@
-# This module manages timezone settings
+#
+# @summary This module manages timezone settings
 #
 # @param timezone
 #     The name of the timezone.
