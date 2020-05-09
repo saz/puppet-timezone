@@ -72,7 +72,7 @@ class timezone (
 
   if $package {
     $use_debconf = lookup('timezone::use_debconf', Boolean, 'first', false)
-    if $package_ensure == 'present' and $use_debconf {
+    if $use_debconf and $timezone_ensure != 'absent' {
       $_tz = split($timezone, '/')
       $area = $_tz[0]
       $zone = $_tz[1]
