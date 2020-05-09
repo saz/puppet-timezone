@@ -109,7 +109,7 @@ class timezone (
     file { $timezone_file:
       ensure  => $timezone_ensure,
       content => template($timezone_file_template),
-      notify  => $notify_services,
+      notify  => $notify_services.map |$svc| { Service[$svc] },
     }
 
     if $ensure == 'present' and $timezone_update {
