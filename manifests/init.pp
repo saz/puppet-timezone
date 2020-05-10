@@ -39,7 +39,7 @@ class timezone (
   Enum['present','absent'] $ensure                         = 'present',
   Optional[Boolean]        $hwutc                          = undef,
   Boolean                  $autoupgrade                    = false,
-  Optional[Array[String]]  $notify_services                = undef,
+  Optional[Array[String]]  $notify_services                = [],
   Optional[String]         $package                        = undef,
   String                   $zoneinfo_dir                   = '/usr/share/zoneinfo/',
   String                   $localtime_file                 = '/etc/localtime',
@@ -98,18 +98,20 @@ class timezone (
     }
   }
 
+  $notify = $notify_services.map |$svc| { Service[$svc] }
+
   file { $localtime_file:
     ensure => $localtime_ensure,
     target => "${zoneinfo_dir}/${timezone}",
     force  => true,
-    notify => $notify_services,
+    notify => $notify,
   }
 
   if $timezone_file {
     file { $timezone_file:
       ensure  => $timezone_ensure,
       content => template($timezone_file_template),
-      notify  => $notify_services.map |$svc| { Service[$svc] },
+      notify  => $notify,
     }
 
     if $ensure == 'present' and $timezone_update {
