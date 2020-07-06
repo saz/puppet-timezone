@@ -41,7 +41,7 @@ class timezone (
   Boolean                  $autoupgrade                    = false,
   Optional[Array[String]]  $notify_services                = [],
   Optional[String]         $package                        = undef,
-  String                   $zoneinfo_dir                   = '/usr/share/zoneinfo/',
+  String                   $zoneinfo_dir                   = '/usr/share/zoneinfo',
   String                   $localtime_file                 = '/etc/localtime',
   Optional[String]         $timezone_file                  = undef,
   Optional[String]         $timezone_file_template         = 'timezone/clock.erb',
