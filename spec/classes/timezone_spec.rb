@@ -86,7 +86,7 @@ describe 'timezone', type: :class do
           context 'redhat/centos 7, 8' do
             it { is_expected.not_to contain_file('/etc/sysconfig/clock') }
             it { is_expected.to contain_file('/etc/localtime').with_ensure('link') }
-            it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC').with_unless('timedatectl status | grep "Timezone:\|Time zone:" | grep -q Etc/UTC') }
+            it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC') }
           end
         end # end RedHat version
 
@@ -97,7 +97,7 @@ describe 'timezone', type: :class do
 
             it { is_expected.not_to contain_file('/etc/sysconfig/clock') }
             it { is_expected.to contain_file('/etc/localtime').with_ensure('link') }
-            it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC').with_unless('timedatectl status | grep "Timezone:\|Time zone:" | grep -q Etc/UTC') }
+            it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC') }
           end
 
           context 'when timezone => "Europe/Berlin"' do
@@ -188,7 +188,7 @@ describe 'timezone', type: :class do
               it { is_expected.to contain_exec('update_timezone').with_command('zic -l Etc/UTC').with(subscribe: 'File[/etc/sysconfig/clock]') }
             else
               it { is_expected.not_to contain_file('/etc/sysconfig/clock') }
-              it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC').with_unless('timedatectl status | grep "Timezone:\|Time zone:" | grep -q Etc/UTC') }
+              it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC') }
             end
           end
 
