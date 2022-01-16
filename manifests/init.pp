@@ -39,16 +39,15 @@ class timezone (
   Enum['present','absent'] $ensure                         = 'present',
   Optional[Boolean]        $hwutc                          = undef,
   Boolean                  $autoupgrade                    = false,
-  Optional[Array[String]]  $notify_services                = [],
+  Array[String]            $notify_services                = [],
   Optional[String]         $package                        = undef,
   String                   $zoneinfo_dir                   = '/usr/share/zoneinfo',
   String                   $localtime_file                 = '/etc/localtime',
   Optional[String]         $timezone_file                  = undef,
-  Optional[String]         $timezone_file_template         = 'timezone/clock.erb',
+  String                   $timezone_file_template         = 'timezone/clock.erb',
   Optional[Boolean]        $timezone_file_supports_comment = undef,
   Optional[String]         $timezone_update                = undef
 ) {
-
   case $ensure {
     /(present)/: {
       if $autoupgrade == true {
@@ -153,5 +152,4 @@ class timezone (
       }
     }
   }
-
 }
