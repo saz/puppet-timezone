@@ -57,10 +57,6 @@
   ],
   "dependencies": [
     {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 2.6.0 < 7.0.0"
-    },
-    {
       "name": "stm/debconf",
       "version_requirement": ">= 2.0.0 < 4.0.0"
     }
