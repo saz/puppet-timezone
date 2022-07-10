@@ -10,16 +10,34 @@
   "description": "Manage timezone settings via Puppet",
   "operatingsystem_support": [
     {
-      "operatingsystem": "Ubuntu"
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "18.04",
+        "20.04",
+        "22.04"
+      ]
     },
     {
-      "operatingsystem": "Debian"
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "9",
+        "10",
+        "11"
+      ]
     },
     {
-      "operatingsystem": "RedHat"
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7",
+        "8"
+      ]
     },
     {
-      "operatingsystem": "CentOS"
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7",
+        "8"
+      ]
     },
     {
       "operatingsystem": "OracleLinux"
