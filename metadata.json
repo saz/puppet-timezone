@@ -1,6 +1,6 @@
 {
   "name": "saz-timezone",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "author": "saz",
   "summary": "Manage timezone settings via Puppet",
   "license": "Apache-2.0",
