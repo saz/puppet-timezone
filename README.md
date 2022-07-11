@@ -1,10 +1,6 @@
-# puppet-timezone [![Build Status](https://secure.travis-ci.org/saz/puppet-timezone.png)](http://travis-ci.org/saz/puppet-timezone)
+# puppet-timezone [![CI](https://github.com/saz/puppet-timezone/actions/workflows/ci.yml/badge.svg)](https://github.com/saz/puppet-timezone/actions/workflows/ci.yml)
 
 Manage timezone settings via Puppet
-
-### Supported Puppet versions
-* Puppet >= 4
-* Last version supporting Puppet 3: v3.5.0
 
 ## Usage
 
