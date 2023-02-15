@@ -54,6 +54,13 @@
       "operatingsystem": "Archlinux"
     },
     {
+      "operatingsystem": "AIX",
+      "operatingsystemrelease": [
+        "7.1",
+        "7.2"
+      ]
+    },
+    {
       "operatingsystem": "FreeBSD",
       "operatingsystemrelease": [
         "11",
