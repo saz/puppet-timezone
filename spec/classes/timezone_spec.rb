@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'timezone', type: :class do
@@ -45,7 +47,7 @@ describe 'timezone', type: :class do
           it { is_expected.to contain_package('tzdata').with_ensure('present') }
           it { is_expected.to contain_file('/etc/timezone').with_ensure('absent') }
           it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }
-        end # end Debian version
+        end
 
       when 'RedHat'
         case facts[:os]['release']['major']
@@ -88,7 +90,7 @@ describe 'timezone', type: :class do
             it { is_expected.to contain_file('/etc/localtime').with_ensure('link') }
             it { is_expected.to contain_exec('update_timezone').with_command('timedatectl set-timezone Etc/UTC').with_unless('timedatectl status | grep "Timezone:\|Time zone:" | grep -q Etc/UTC') }
           end
-        end # end RedHat version
+        end
 
       when 'Archlinux'
         context 'archlinux' do
@@ -118,7 +120,7 @@ describe 'timezone', type: :class do
             it { is_expected.to contain_package('tzdata').with_ensure('present') }
             it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }
           end
-        end # end Archlinux version
+        end
 
       when 'Gentoo'
 
@@ -152,7 +154,7 @@ describe 'timezone', type: :class do
             it { is_expected.to contain_file('/etc/timezone').with_ensure('absent') }
             it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }
           end
-        end # end Gentoo
+        end
 
       when 'FreeBSD'
         context 'FreeBSD' do
@@ -177,7 +179,7 @@ describe 'timezone', type: :class do
 
             it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }
           end
-        end # end FreeBSD
+        end
 
       when 'Suse'
         context 'Suse' do
@@ -209,11 +211,11 @@ describe 'timezone', type: :class do
 
             it { is_expected.to contain_file('/etc/localtime').with_ensure('absent') }
           end
-        end # end Suse
+        end
 
       else
         pending "There are no tests for #{os} (#{facts[:os]['family']})"
-      end # end OS Family
+      end
     end
   end
 end
