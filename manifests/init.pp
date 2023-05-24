@@ -38,7 +38,7 @@ class timezone (
   Array[String]            $notify_services                = [],
   Optional[String]         $package                        = undef,
   String                   $zoneinfo_dir                   = '/usr/share/zoneinfo',
-  String                   $localtime_file                 = '/etc/localtime',
+  Optional[String]         $localtime_file                 = undef,
   Optional[String]         $timezone_file                  = undef,
   String                   $timezone_file_template         = 'timezone/clock.erb',
   Optional[Boolean]        $timezone_file_supports_comment = undef,
@@ -95,11 +95,13 @@ class timezone (
 
   $notify = $notify_services.map |$svc| { Service[$svc] }
 
-  file { $localtime_file:
-    ensure => $localtime_ensure,
-    target => "${zoneinfo_dir}/${timezone}",
-    force  => true,
-    notify => $notify,
+  if $localtime_file {
+    file { $localtime_file:
+      ensure => $localtime_ensure,
+      target => "${zoneinfo_dir}/${timezone}",
+      force  => true,
+      notify => $notify,
+    }
   }
 
   if $timezone_file {
@@ -125,7 +127,6 @@ class timezone (
         command => sprintf($timezone_update, $timezone),
         unless  => sprintf($unless_cmd, $timezone),
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-        require => File[$localtime_file],
       }
     }
   }

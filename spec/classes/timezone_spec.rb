@@ -213,6 +213,13 @@ describe 'timezone', type: :class do
           end
         end
 
+      when 'AIX'
+        context 'AIX' do
+          context 'when using default class parameters' do
+            it { is_expected.to contain_exec('update_timezone').with_command('chtz Etc/UTC').with_unless('echo $TZ | grep -q Etc/UTC') }
+          end
+        end # end AIX
+
       else
         pending "There are no tests for #{os} (#{facts[:os]['family']})"
       end
