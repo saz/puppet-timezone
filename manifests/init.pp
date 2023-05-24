@@ -7,27 +7,23 @@
 # @param ensure
 #     Ensure if present or absent.
 #
+# @param hwutc
+#     Is the hardware clock set to UTC? (true or false)
+#
 # @param autoupgrade
 #     Upgrade package automatically, if there is a newer version.
 #
+# @param notify_services
+#     List of services to notify
+#
 # @param package
 #     Name of the package.
-#     Only set this, if your platform is not supported or you know, what you're doing.
-#
-# @param config_file
-#     Main configuration file.
 #     Only set this, if your platform is not supported or you know, what you're doing.
 #
 # @param zoneinfo_dir
 #     Source directory of zoneinfo files.
 #     Only set this, if your platform is not supported or you know, what you're doing.
 #     Default: auto-set, platform specific
-#
-# @param hwutc
-#     Is the hardware clock set to UTC? (true or false)
-#
-# @param notify_services
-#     List of services to notify
 #
 # @example
 #   class { 'timezone':
