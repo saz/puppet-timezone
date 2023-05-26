@@ -111,6 +111,10 @@ class timezone (
       notify  => $notify,
     }
 
+    if $localtime_file {
+      File[$localtime_file] -> File[$timezone_file]
+    }
+
     if $ensure == 'present' and $timezone_update {
       exec { 'update_timezone':
         command     => sprintf($timezone_update, $timezone),
