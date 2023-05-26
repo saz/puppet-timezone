@@ -102,11 +102,11 @@ Default value: `'/usr/share/zoneinfo'`
 
 ##### <a name="-timezone--localtime_file"></a>`localtime_file`
 
-Data type: `String`
+Data type: `Optional[String]`
 
 
 
-Default value: `'/etc/localtime'`
+Default value: `undef`
 
 ##### <a name="-timezone--timezone_file"></a>`timezone_file`
 
