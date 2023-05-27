@@ -1,6 +1,6 @@
 {
   "name": "saz-timezone",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "author": "saz",
   "summary": "Manage timezone settings via Puppet",
   "license": "Apache-2.0",
@@ -84,7 +84,7 @@
   "dependencies": [
     {
       "name": "stm/debconf",
-      "version_requirement": ">= 2.0.0 < 5.0.0"
+      "version_requirement": ">= 2.0.0 < 6.0.0"
     }
   ],
   "tags": [
