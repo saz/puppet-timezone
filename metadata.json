@@ -72,7 +72,8 @@
       "operatingsystemrelease": [
         "11",
         "12",
-        "15"
+        "15",
+        "16"
       ]
     }
   ],
