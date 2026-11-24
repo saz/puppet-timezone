@@ -78,6 +78,8 @@ Default value: `false`
 Data type: `Array[String]`
 
 List of services to notify
+Services that are not declared in the catalog are ignored, whatever the
+order.
 
 Default value: `[]`
 

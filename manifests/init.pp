@@ -14,7 +14,8 @@
 #     Upgrade package automatically, if there is a newer version.
 #
 # @param notify_services
-#     List of services to notify
+#     Services to refresh when the timezone files change. Services that are
+#     not declared in the catalog are ignored, whatever the order.
 #
 # @param package
 #     Name of the package.
@@ -93,14 +94,11 @@ class timezone (
     }
   }
 
-  $notify = $notify_services.map |$svc| { Service[$svc] }
-
   if $localtime_file {
     file { $localtime_file:
       ensure => $localtime_ensure,
       target => "${zoneinfo_dir}/${timezone}",
       force  => true,
-      notify => $notify,
     }
   }
 
@@ -108,7 +106,6 @@ class timezone (
     file { $timezone_file:
       ensure  => $timezone_ensure,
       content => template($timezone_file_template),
-      notify  => $notify,
     }
 
     if $localtime_file {
@@ -131,6 +128,24 @@ class timezone (
         command => sprintf($timezone_update, $timezone),
         unless  => sprintf($unless_cmd, $timezone),
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+      }
+    }
+  }
+
+  # Resource collectors are order-independent: they match a service declared
+  # later in the catalog, and a service that no node declares is a no-op.
+  if $localtime_file {
+    $notify_services.each |$svc| {
+      Service <| title == $svc |> {
+        subscribe +> File[$localtime_file],
+      }
+    }
+  }
+
+  if $timezone_file {
+    $notify_services.each |$svc| {
+      Service <| title == $svc |> {
+        subscribe +> File[$timezone_file],
       }
     }
   }

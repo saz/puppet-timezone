@@ -16,6 +16,19 @@ describe 'timezone', type: :class do
 
       it { is_expected.to create_class('timezone') }
 
+      context 'when notify_services names an undeclared service' do
+        let(:params) { { notify_services: ['timezone-absent'] } }
+
+        it { is_expected.to compile.with_all_deps }
+      end
+
+      context 'when notify_services names a declared service' do
+        let(:params) { { notify_services: ['cron'] } }
+        let(:pre_condition) { "service { 'cron': ensure => 'running' }" }
+
+        it { is_expected.to contain_service('cron').that_subscribes_to('File[/etc/localtime]') }
+      end
+
       case facts[:os]['family']
       when 'Debian'
 
